@@ -1,0 +1,20 @@
+# Quaffable
+
+Quaffable is something-like a roguelike foundation. It's really just my rehashing of a roguelike over several years then I'm making available.
+
+It has some nice features, but in general it's a bit of a mess. I hope to be improving it shortly.
+
+The source is licensed under the New BSD License.
+
+## Requirements
+
+* SDL
+* c++
+
+So far only tested on Mac OS X 10.5+, but it's c++ and SDL so technically could run on other platforms with some minor fixes.
+Sorry no MAKEFILE
+
+## Screenshots
+
+![Screenshot of Outside](https://github.com/DanBrooker/Quaffable/raw/master/Screenshots/Picture 9.png "Sample")
+![Screenshot of Debug Mode](https://github.com/DanBrooker/Quaffable/raw/master/Screenshots/Picture 10.png "Sample Debug")
