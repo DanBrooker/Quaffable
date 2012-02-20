@@ -12,24 +12,43 @@
 
 class Colour 
 {
-	public:
-		float R,G,B,A;
-		
-		Colour();
-		Colour(float r,float g,float b);
-		Colour(float r,float g,float b, float a);
-		
-		static Colour Black();
-		static Colour White();
-		static Colour Clear();
-		
-		static Colour Red();
-		static Colour Green();
-		static Colour Blue();
-		
-		static Colour Yellow();
-		static Colour Cyan();
-		static Colour Magenta();
+    
+public:
+    float R,G,B,A;
+    
+    Colour();
+    Colour(float r,float g,float b);
+    Colour(float r,float g,float b, float a);
+    Colour(unsigned int hex);
+    
+    void lighten();
+    void lighten(float amount);
+    void darken();
+    void darken(float amount);
+    void destaturate();
+    void invert();
+    
+    void moreRed();
+    void moreBlue();
+    void moreGreen();
+    
+    void lessRed();
+    void lessBlue();
+    void lessGreen();
+    
+    void lerp(Colour colour, float amount);
+    
+    static Colour black();
+    static Colour white();
+    static Colour clear();
+    
+    static Colour red();
+    static Colour green();
+    static Colour blue();
+    
+    static Colour yellow();
+    static Colour cyan();
+    static Colour magenta();
 };
 
 #endif /* COLOUR_H_INC */

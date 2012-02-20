@@ -54,6 +54,8 @@ class Roguelike
 		Image *logo;
     
         std::map<int,std::string> logs;
+        
+        Random *rnd;
 
     public:
         Roguelike();

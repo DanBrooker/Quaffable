@@ -28,13 +28,12 @@ FantasyRL::FantasyRL()
 	rootWindow->eventDelegate = world;
 	rootWindow->texture = sprite;
 	rootWindow->getCentreLabel()->setString("FantasyRL");
-	//	rootWindow->getCentreLabel()->setColour(Colour::Red());
 	rootWindow->getRightLabel()->setString("v0.1");
 	
 	character = new Window(Rect(16,24,140+32,32+16));
 	character->borderStyle = Border_Single;
 	character->getLeftLabel()->setString("Draconis");
-	character->getLeftLabel()->setColour(Colour::Yellow());
+	character->getLeftLabel()->setColour(Colour::yellow());
 	
 	Label *familyLabel = new Label("Static Label");
 	familyLabel->setFrame(Rect(16,18,100,40));
@@ -58,7 +57,7 @@ void FantasyRL::init_world()
 {
 	int worldSize = 200;
 	
-	Random::setSeed(42);
+	rnd =  new Random(42);
 	
 	sprite = new Sprite(filenameWithFormat("tileset.png") /*"FantasyRL.app/Contents/Resources/tileset.png"*/,16);
     world = new World();

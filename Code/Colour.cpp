@@ -8,6 +8,7 @@
  */
 
 #include "Colour.h"
+#include "Random.h"
 #include <cstdio>
 
 Colour::Colour()
@@ -34,44 +35,131 @@ Colour::Colour(float r,float g,float b,float a)
 	A = a;
 }
 
-Colour Colour::Black()
+Colour::Colour(unsigned int hex)
 {
-	return Colour(0,0,0);
+    R = ( (hex >> 16) & 0xFF ) / 255.0f;
+    G = ( (hex >> 8) & 0xFF ) / 255.0f;
+	B = ( (hex) & 0xFF ) / 255.0f;
+	A = 1.0f;
 }
 
-Colour Colour::White()
+inline float Lerp(float start, float end, float amount)
 {
-	return Colour(1.0,1.0,1.0);
+    float difference = end - start;
+    float adjusted = difference * amount;
+    return start + adjusted;
 }
 
-Colour Colour::Clear()
+void Colour::lerp(Colour colour, float amount)
 {
-	return Colour(0,0,0,0);
+    R = Lerp(R,colour.R,amount);
+    G = Lerp(G,colour.G,amount);
+    B = Lerp(B,colour.B,amount);
 }
 
-Colour Colour::Red()
+void Colour::lighten()
 {
-	return Colour(1.0,0,0);
-}
-Colour Colour::Green()
-{
-	return Colour(0,1.0,0);
-}
-Colour Colour::Blue()
-{
-	return Colour(0,0,1.0);
-}
-		
-Colour Colour::Yellow()
-{
-	return Colour(1.0,1.0,0);
+    lighten(0.1f);
 }
 
-Colour Colour::Cyan()
+void Colour::lighten(float amount)
 {
-	return Colour(0,1.0,1.0);
+    lerp(Colour::white(), amount);
 }
-Colour Colour::Magenta()
+
+void Colour::darken()
 {
-	return Colour(1.0,0,1.0);
+    darken(0.1f);
+}
+
+void Colour::darken(float amount)
+{
+    lerp(Colour::black(), amount);
+}
+
+void Colour::destaturate()
+{
+    float gray = 0.299 * R + 0.587 * G + 0.114 * B;
+    R = gray;
+    G = gray;
+    B = gray;
+}
+
+void Colour::invert()
+{
+    R = 1.0f-R;
+    G = 1.0f-G;
+    B = 1.0f-B;
+}
+
+void Colour::moreRed()
+{
+    lerp(Colour::red(), 0.1);
+}
+
+void Colour::moreBlue()
+{
+    lerp(Colour::blue(), 0.1);
+}
+
+void Colour::moreGreen()
+{
+    lerp(Colour::green(), 0.1);
+}
+
+void Colour::lessRed()
+{
+    lerp(Colour::red(), -0.1);
+}
+
+void Colour::lessBlue()
+{
+    lerp(Colour::blue(), -0.1);
+}
+
+void Colour::lessGreen()
+{
+    lerp(Colour::green(), -0.1);
+}
+
+Colour Colour::black()
+{
+    return Colour(0.0f,0.0f,0.0f);
+}
+
+Colour Colour::white()
+{
+	return Colour(1.0f,1.0f,1.0f);
+}
+
+Colour Colour::clear()
+{
+	return Colour(0.0f,0.0f,0.0f,0.0f);
+}
+
+Colour Colour::red()
+{
+	return Colour(1.0f,0.0f,0.0f);
+}
+Colour Colour::green()
+{
+	return Colour(0.0f,1.0f,0.0f);
+}
+Colour Colour::blue()
+{
+	return Colour(0.0f,0.0f,1.0f);
+}
+
+Colour Colour::yellow()
+{
+	return Colour(1.0f,1.0f,0.0f);
+}
+
+Colour Colour::cyan()
+{
+	return Colour(0.0f,1.0f,1.0f);
+}
+Colour Colour::magenta()
+{
+	return Colour(1.0f,0.0f,1.0f);
 }

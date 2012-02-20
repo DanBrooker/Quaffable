@@ -26,7 +26,7 @@ class Lightmap
 		WorldCoord local2world(LocalCoord l);
 		bool isBlocked(WorldCoord co);
 		bool isVisible(LocalCoord co);
-		void setVisible(LocalCoord co);	
+		void setVisible(LocalCoord co);
 		virtual bool pointInRange(Point a, Point b, int range);
 		virtual void calculate();
 		void cast_light(int row, float start,float end,int xx,int xy,int yx,int yy,int id);	

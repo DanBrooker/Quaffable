@@ -109,7 +109,7 @@ void Roguelike::worldProjection()
 
 void Roguelike::init_world()
 {
-	Random::setSeed(42);
+	rnd = new Random(42);
 
 	sprite = new Sprite("Roguelike.app/Contents/Resources/tileset.png",16);
     world = new World();

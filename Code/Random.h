@@ -11,14 +11,23 @@
 #define RANDOM_H_INC
 
 #include <cstdlib>
+#include "mtrand.h"
 
 class Random 
 {	
-	private:
-		static int rseed;
-	public:
-		static void setSeed(int seed);
-		static int getInt();
+    
+private:
+    unsigned long seed;
+    MTRand *int_r;
+    MTRand_open *double_r;
+    
+public:
+    
+    Random(unsigned long seed);
+    
+    int getInt();
+    float getFloat();
+    double getDouble();
 };
 
 #endif /* RANDOM_H_INC */

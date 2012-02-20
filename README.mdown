@@ -23,8 +23,6 @@ Install SDL and SDL_Image into Frameworks, (I may bundle this as a private frame
 
 So far only tested on Mac OS X 10.5+, but it's c++ and SDL so technically could run on other platforms with some minor fixes.
 
-Sorry no MAKEFILE yet
-
 ## Screenshots
 
 ![Screenshot of Outside](https://github.com/DanBrooker/Quaffable/raw/master/Screenshots/Picture 9.png "Sample")

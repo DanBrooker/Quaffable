@@ -9,14 +9,24 @@
 
 #include "Random.h"
 
-int Random::rseed = 0;
-
-void Random::setSeed(int seed)
+Random::Random(unsigned long seed)
 {
-	static bool first = true;
-	if(first)
-	{
-		rseed = seed;
-		first = false;
-	}
+    this->seed = seed;
+    int_r = new MTRand(seed);
+    double_r = new MTRand_open(seed);
+}
+
+int Random::getInt()
+{
+    return (*int_r)();
+}
+
+float Random::getFloat()
+{
+    return static_cast<float>((*double_r)());
+}
+
+double Random::getDouble()
+{
+    return (*double_r)();
 }

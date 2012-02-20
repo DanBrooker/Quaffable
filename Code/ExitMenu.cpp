@@ -17,7 +17,7 @@ ExitMenu::ExitMenu(Rect rect) : Menu(rect)
 {
 	borderStyle = Border_Double;
 	getCentreLabel()->setString("Paused");
-	getCentreLabel()->setColour(Colour::Red());
+	getCentreLabel()->setColour(Colour::red());
 	
 	Label *optionsLabel = new Label("Return to Game");
 	optionsLabel->setFrame(Rect(16,18+12,100,40));

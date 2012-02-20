@@ -14,7 +14,7 @@
 Window::Window(Rect rect)
 {
 	this->rect = rect;
-	borderColour = Colour::White();
+	borderColour = Colour::white();
 	borderStyle = Border_Single;
 	this->delegate = NULL;
 	this->texture = NULL;

@@ -20,8 +20,8 @@ Label::Label(std::string text)
 {
 	parent = NULL;
 	this->text = text;
-	colour = Colour::White();
-	bgColour = Colour::Black();
+	colour = Colour::white();
+	bgColour = Colour::black();
 	selected = false;
 }
 

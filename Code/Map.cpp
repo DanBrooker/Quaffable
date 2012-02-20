@@ -357,8 +357,8 @@ void Map::displayTile(float *texture, float *colour,float *backgroundColour, Til
 	{
 		row = 0;
 		column = 0;
-		fc = Colour::Black();
-		bc = Colour::Black();
+		fc = Colour::black();
+		bc = Colour::black();
 	}
     
 	texture[0] = ratio*			column;		texture[1] = ratio*			row;	
