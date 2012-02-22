@@ -28,6 +28,8 @@ Monster::Monster() : Object()
     
     setTransparent(false);
 	setPassable(false);
+    
+    ai = AIPassive;
 }
 
 Monster::Monster(Ascii *ascii) : Object(ascii)
@@ -40,6 +42,8 @@ Monster::Monster(Ascii *ascii) : Object(ascii)
     
     setTransparent(false);
 	setPassable(false);
+    
+    ai = AIPassive;
 }
 
 int Monster::getHP()
@@ -99,11 +103,8 @@ void Monster::updateAscii()
 	Object::updateAscii();
 }
 
-void randomMovement(int count,Monster *monster, Map *map)
+WorldCoord Monster::randomMove()
 {
-    if(count > 5)
-        return;
-    
     int x=0,y=0;
     switch(rand()%4)
     {
@@ -122,22 +123,41 @@ void randomMovement(int count,Monster *monster, Map *map)
             
     }
     
-    WorldCoord current = monster->getPosition();
+    WorldCoord current = this->getPosition();
     WorldCoord random(current.X+x,current.Y+y);
-    if(map->checkMove(monster,random.X,random.Y))
-        map->moveObject(monster,random.X,random.Y);
-    else
-        randomMovement(count++,monster,map);
+    
+    return random;
 }
 
 void Monster::performTurn()
 {
     if(hp <= 0)
         return;
-	if(dynamic_cast<Player *>(this)== NULL) // Not the player, temp ai for monsters
-	{
-		randomMovement(0,this,getMap());
-	}
+//	if(dynamic_cast<Player *>(this)== NULL) // Not the player, temp ai for monsters
+        
+    WorldCoord move;
+    Map *map = getMap();
+    
+    switch (ai) 
+    {
+        case AIPassive:
+        case AIDefensive:
+        case AIAggressive:
+            for(int i = 0; i < 5; i++) 
+            {
+                move = randomMove();
+                
+                if(map->checkMove(this, move.X, move.Y))
+                {
+                    map->moveObject(this,move.X,move.Y);
+                    break;
+                }
+            }
+            break;
+        case AINone:                
+        default:
+            break;
+    }    
 }
 
 bool Monster::canSee(int x, int y)

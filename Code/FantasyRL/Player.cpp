@@ -11,5 +11,5 @@
 
 Player::Player() : Monster(new Ascii(64,1.0,0,0))
 {
-	
+	ai = AINone;
 }

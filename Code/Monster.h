@@ -24,6 +24,7 @@ typedef enum {
 } Speed;
 
 typedef enum {
+    AINone,
     AIPassive,
     AIDefensive,
     AIAggressive,
@@ -59,6 +60,10 @@ class Monster: public Object
         unsigned mp,maxmp;
     
         std::map<std::string, Object *> equipment;
+    
+        AI ai;
+    
+        WorldCoord randomMove();
 		
 	public:
 
