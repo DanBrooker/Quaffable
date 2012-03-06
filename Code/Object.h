@@ -34,7 +34,7 @@ typedef struct
 class Object {
 	protected:
 		AsciiGroup *asciis;
-        std::list<Object *> *inventory;
+        Objects *inventory;
 	public:
 		Tile *parent;
 		std::string name;
@@ -70,10 +70,11 @@ class Object {
 		Ascii* getAscii();
 		virtual void updateAscii();
     
-        void addObjectToInventory(Object *object);
-        void removeObjectFromInventory(Object *object); 
-        std::list<Object *> *getInventory();
-        void dumpInventory();
+        virtual void addObjectToInventory(Object *object);
+        virtual void removeObjectFromInventory(Object *object); 
+        virtual Objects *getInventory();
+        virtual void dumpInventory();
+        void dropInventoryObject(Object *object);
     
         virtual void onDeath();
         virtual void onDamagedBy(Object *attacker,Damage damage);

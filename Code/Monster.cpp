@@ -14,7 +14,6 @@
 #include "Player.h"
 #include "Ascii.h"
 #include "Roguelike.h"
-#include "Weapon.h"
 
 #include "Stringer.h"
 
@@ -29,7 +28,7 @@ Monster::Monster() : Object()
     setTransparent(false);
 	setPassable(false);
     
-    ai = AIPassive;
+    behaviour = BehaviourDefensive;
 }
 
 Monster::Monster(Ascii *ascii) : Object(ascii)
@@ -43,7 +42,7 @@ Monster::Monster(Ascii *ascii) : Object(ascii)
     setTransparent(false);
 	setPassable(false);
     
-    ai = AIPassive;
+    behaviour = BehaviourDefensive;
 }
 
 int Monster::getHP()
@@ -129,35 +128,105 @@ WorldCoord Monster::randomMove()
     return random;
 }
 
+WorldCoord Monster::towardTargets(Objects *targets)
+{
+    return randomMove();
+}
+
+WorldCoord Monster::awayFromTargets(Objects *targets)
+{
+    return randomMove();
+}
+
 void Monster::performTurn()
 {
     if(hp <= 0)
         return;
-//	if(dynamic_cast<Player *>(this)== NULL) // Not the player, temp ai for monsters
-        
+     
     WorldCoord move;
     Map *map = getMap();
     
-    switch (ai) 
+    Objects *aggressors = map->getAggressors(this);
+    Objects *targets = map->getTargets(this);
+    
+    LOG("<[%s] %d targets>",this->name.c_str(),targets->size());
+    LOG("<[%s] %d aggressors>",this->name.c_str(),aggressors->size());
+
+    /// check flee
+    if(HAS_MASK(behaviour,BehaviourFlees))
     {
-        case AIPassive:
-        case AIDefensive:
-        case AIAggressive:
-            for(int i = 0; i < 5; i++) 
+        if(HAS_MASK(behaviour,BehaviourAggressive) && hp > (maxhp*0.2))
+        {
+            LOG("<[%s] too aggressive to flee>",this->name.c_str());
+//            if(targets && !targets->empty())
+//            {
+//                move = towardTargets(targets);
+//                LOG("<[%s] move toward target>",this->name.c_str());
+//            }
+//            else
+//            {
+//                move = randomMove();
+//                LOG("<[%s] moved randomly>",this->name.c_str());
+//            }
+        }
+        else
+        {
+            if(targets && !targets->empty())
             {
-                move = randomMove();
-                
-                if(map->checkMove(this, move.X, move.Y))
-                {
-                    map->moveObject(this,move.X,move.Y);
-                    break;
-                }
+                move = awayFromTargets(targets);
+                LOG("<[%s] fled>",this->name.c_str());
             }
-            break;
-        case AINone:                
-        default:
-            break;
-    }    
+//            else
+//            {
+//                move = randomMove();
+//                DLOG("[%s] moved randomly>",this->name.c_str());
+//            }
+        }
+    }
+    
+    if(move.zero() && map->checkMove(this, move.X, move.Y))
+    {
+        map->moveObject(this,move.X,move.Y);
+        return;
+    }
+    
+    
+    /// check can attack
+    if(attacking || HAS_MASK(behaviour,BehaviourAggressive))
+    {
+        if(!targets->empty())
+        {
+            LOG("<[%s] would attack target>",this->name.c_str());
+        }
+    }
+    
+    /// check movement
+    
+    /// random movement
+    
+    
+    
+//        if(HAS_MASK(behaviour,BehaviourPassive)/*behaviour == (behaviour & BehaviourPassive)*/ )
+//        {
+//            move = randomMove();
+//            
+//            if(map->checkMove(this, move.X, move.Y))
+//            {
+//                map->moveObject(this,move.X,move.Y);
+//                //break;
+//            }
+//        }
+//        else if(HAS_MASK(behaviour,BehaviourDefensive) && !attacking)
+//        {
+//            move = randomMove();
+//            
+//            
+//        }
+//        else if(HAS_MASK(behaviour,BehaviourDefensive) && attacking)
+//        {
+//            //break;
+//        }
+
 }
 
 bool Monster::canSee(int x, int y)
@@ -174,16 +243,26 @@ void Monster::calculateSight()
 	sightMap = new Lightmap(getPosition(),sight,getMap());
 }
 
-Object *Monster::getWeaponForMelee()
+Objects Monster::getWeaponsForMelee()
 {    
-    return NULL;
+    Objects weapons;
+    foreachp(ObjectMap, obj, equipment)
+    {
+        Object *weapon = obj->second;
+        if(weapon->_flags.wieldable)
+        {
+            weapons.push_back(weapon);
+        }
+    }
+    
+    return weapons;
 }
 
 void Monster::onDeath()
 {
     LOG("#AA0%s died.",this->name.c_str());
     // make corpse
-    Object *corpse = new Object(new Ascii(PERCENT,1,1,1));
+    Object *corpse = new Object(new Ascii(PERCENT,Colour::white()));
     parent->addObject(corpse);
     
     // make gore
@@ -195,12 +274,31 @@ void Monster::onDeath()
     parent->removeObject(this);
 }
 
-Damage Monster::getMeleeDamage()
+Damages Monster::getMeleeDamages()
 {
-    return Damage(1,DamageBlunt);
+    Damages dmgs;
+    Objects weapons = getWeaponsForMelee();
+    foreach(Objects,w,weapons)
+    {
+        dmgs.push_back((*w)->getMeleeDamage());
+    }
+    return dmgs;
 }
 
 void Monster::onDamagedBy(Object *attacker,Damage damage)
 {
-    // attack the attacker because if monster
+    // attack the attacker if monster
+    attacking = true;
+}
+
+void Monster::dumpInventory()
+{
+    Object::dumpInventory();
+    if(equipment == NULL)
+        return;
+    
+    foreachp(ObjectMap, object, equipment)
+    {
+        dropInventoryObject((object->second));
+    }
 }

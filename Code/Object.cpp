@@ -119,7 +119,7 @@ void Object::removeObjectFromInventory(Object *object)
     inventory->remove(object);
 }
 
-std::list<Object *>* Object::getInventory()
+Objects *Object::getInventory()
 {
     return inventory;
 }
@@ -130,8 +130,13 @@ void Object::dumpInventory()
         return;
     foreachp(std::list<Object *>, object, inventory)
     {
-        // dump items somewhere
+        dropInventoryObject((*object));
     }
+}
+
+void Object::dropInventoryObject(Object *object)
+{
+    
 }
 
 Damage Object::getMeleeDamage()

@@ -21,7 +21,14 @@ Ascii::Ascii(SpriteIndex index, float red,float green, float blue)
 {
     Index = index;
     Foreground = Colour( red, green, blue);
-    Background = Colour( 0,0,0);
+    Background = Colour::black();
+}
+
+Ascii::Ascii(SpriteIndex index, Colour fg)
+{
+    Index = index;
+    Foreground = fg;
+    Background = Colour::black();
 }
 
 Ascii::Ascii(SpriteIndex index, Colour fg,Colour bg)

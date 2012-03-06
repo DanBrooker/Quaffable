@@ -316,6 +316,7 @@ class Ascii
     
         Ascii();
         Ascii(SpriteIndex index, float red,float green, float blue);
+        Ascii(SpriteIndex index, Colour fg);
 		Ascii(SpriteIndex index, Colour fg,Colour bg);
 		
 		// copy operator

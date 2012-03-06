@@ -9,6 +9,8 @@
 #ifndef DAMAGE_H_INC
 #define DAMAGE_H_INC
 
+#include <list>
+
 #define DamageBlunt     1<<0
 #define DamageSharp     1<<1
 #define DamagePierce    1<<2
@@ -30,7 +32,10 @@ class Damage
     int damage;
     DamageMask mask;
     
+    Damage() {damage = 0;};
     Damage(int dmg, DamageMask damageMask) { damage = dmg; mask = damageMask; }
 };
+
+typedef std::list<Damage> Damages;
 
 #endif /* DAMAGE_H_INC */

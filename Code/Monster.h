@@ -23,12 +23,13 @@ typedef enum {
 	SpeedFast
 } Speed;
 
-typedef enum {
-    AINone,
-    AIPassive,
-    AIDefensive,
-    AIAggressive,
-} AI;
+#define BehaviourNone       1<<0
+#define BehaviourPassive    1<<1
+#define BehaviourAggressive 1<<2
+#define BehaviourDefensive  1<<3
+#define BehaviourFlees      1<<4
+
+typedef int BehaviourMask;
 
 typedef struct {
 //	unsigned passable:1;
@@ -59,11 +60,15 @@ class Monster: public Object
         unsigned hp,maxhp;
         unsigned mp,maxmp;
     
-        std::map<std::string, Object *> equipment;
+        ObjectMap *equipment;
     
-        AI ai;
+        BehaviourMask behaviour;
     
         WorldCoord randomMove();
+        WorldCoord towardTargets(Objects *targets);
+        WorldCoord awayFromTargets(Objects *targets);
+    
+        bool attacking;
 		
 	public:
 
@@ -81,9 +86,11 @@ class Monster: public Object
         int getMaxHP();
         void setMaxHP(int maxHitPoints);
     
-        Object *getWeaponForMelee();
+        Objects getWeaponsForMelee();
     
-        virtual Damage getMeleeDamage();
+        virtual Damages getMeleeDamages();
+    
+        virtual void dumpInventory();
 		
 		virtual void updateAscii();
 		virtual void performTurn();

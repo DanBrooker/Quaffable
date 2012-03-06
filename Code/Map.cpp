@@ -234,14 +234,22 @@ bool Map::checkCombat(Monster *monster, int i, int j)
             target->adjustHP(-damage.damage);
             LOG("<%s.>",target->hpDescription().c_str());
             
-            if(target->getHP() <= 0 )
-            {
-                // dead
+            if(target->getHP() > 0 )
                 monster->onDamagedObject(target,damage);
-            }
+            
         }
     }
 	return false;
+}
+
+Objects *Map::getAggressors(Object *object)
+{
+    return new Objects();
+}
+
+Objects *Map::getTargets(Object *object)
+{
+    return new Objects();
 }
 
 bool Map::checkAction(Object *object, int i, int j)

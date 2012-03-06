@@ -16,6 +16,9 @@
 
 #include "Colour.h"
 
+/**
+ Wrap debug text in <> brackets
+ */
 class Label : public Display
 {
 	private:

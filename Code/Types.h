@@ -27,8 +27,6 @@ typedef std::list<Window*> Windows;
 typedef std::list<Object*> Objects;
 typedef std::list<Monster*> Monsters;
 
-//typedef map<int,list<Object*> > ObjectMap;
-
 typedef bool (*KeyAction)(void);
 typedef std::map<SDLKey,KeyAction> KeyMap;
 
@@ -38,11 +36,15 @@ class Point
 		int X,Y;
 		Point() {X=0,Y=0;};
 		Point(int x,int y) {X=x,Y=y;};
+    
+        bool zero() { return X==0 && Y==0; };
 };
 
 typedef std::list<Point> Points;
 typedef Point LocalCoord;
 typedef Point WorldCoord;
+
+typedef std::map<std::string, Object *> ObjectMap;
 
 class Rect
 {
@@ -107,6 +109,9 @@ private:
 #define foreach(type,counter,collection) for(type::iterator counter = collection.begin(); counter != collection.end(); counter++)
 #define foreachp(type,counter,collection) for(type::iterator counter = collection->begin(); counter != collection->end(); counter++)
 #define DEV (Roguelike::dev)
+
+#define HAS_MASK(var,mask) (var == (var & mask))
+#define NOT_MASK(var,mask) (var != (var & mask))
 
 #define MAX(x,y) ( (x>y)?x:y )
 #define MIN(x,y) ( (x<y)?x:y )

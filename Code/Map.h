@@ -68,6 +68,11 @@ class Map
         bool checkAction(Object *object, int i, int j);
 
 		bool getTransparent(int x, int y);
+    
+        // Conflict
+    
+        Objects *getAggressors(Object *object);
+        Objects *getTargets(Object *object);
 };
 
 #endif /* MAP_H_INC  */
