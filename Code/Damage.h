@@ -33,7 +33,7 @@ class Damage
     DamageMask mask;
     
     Damage() {damage = 0;};
-    Damage(int dmg, DamageMask damageMask) { damage = dmg; mask = damageMask; }
+    Damage(int dmg, DamageMask damageMask = DamageBlunt ) { damage = dmg; mask = damageMask; }
 };
 
 typedef std::list<Damage> Damages;

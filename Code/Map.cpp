@@ -182,7 +182,7 @@ bool Map::adjustPlayer(int i, int j)
         visibleRect = Rect(x-40+1,y-20+1,80,40);
 		return true;
 	}
-    else if(checkCombat(player,x,y))
+    else if(checkCombat(player,x,y)) // this is less check combat and more do melee combat, refactor
     {
         
     }
@@ -244,8 +244,10 @@ bool Map::checkCombat(Monster *monster, int i, int j)
             LOG("<%s.>",target->hpDescription().c_str());
             
             if(target->getHP() > 0 )
-                monster->onDamagedObject(target,damage);
+                target->onDamagedBy(monster, damage);
+            monster->onDamagedObject(target,damage);
             
+            return true;
         }
     }
 	return false;
@@ -263,6 +265,7 @@ bool Map::checkAction(Object *object, int i, int j)
     {
 //        Object *object = tile.getTopObject();
         //LOG("Tile %d,%d passable=%d %s",i,j,passable,object->name.c_str());
+        return true;
     }
 	return false;
 }

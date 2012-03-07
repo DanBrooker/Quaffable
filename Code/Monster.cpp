@@ -25,7 +25,7 @@ Monster::Monster() : Object()
 	speed = SpeedNormal; 
     name = "Monster";
     
-    setTransparent(false);
+    setTransparent(true);
 	setPassable(false);
     
     behaviour = BehaviourDefensive;
@@ -39,7 +39,7 @@ Monster::Monster(Ascii *ascii) : Object(ascii)
 	speed = SpeedNormal;
     name = "Monster";
     
-    setTransparent(false);
+    setTransparent(true);
 	setPassable(false);
     
     behaviour = BehaviourDefensive;
@@ -138,6 +138,22 @@ WorldCoord Monster::awayFromAttacker(Object *target)
     return randomMove();
 }
 
+void Monster::attack(Object *t, Object *weapon)
+{
+    Monster *target = dynamic_cast<Monster *>(t);
+    if(target != NULL)
+    {
+        Damage damage = target->calculateMeleeDamageFrom(this);
+        LOG("Hit %s.< #AA0%d dmg>",target->name.c_str(),damage.damage);
+        target->adjustHP(-damage.damage);
+        LOG("<%s.>",target->hpDescription().c_str());
+        
+        if(target->getHP() > 0 )
+            target->onDamagedBy(this, damage);
+        this->onDamagedObject(target,damage);
+    }
+}
+
 void Monster::performTurn()
 {
     if(hp <= 0)
@@ -153,6 +169,16 @@ void Monster::performTurn()
     }
     
     Object *nearest = NULL;
+    float mindist = sight+1;
+    foreach(Objects, o, attackers)
+    {
+        float dist = (*o)->distanceTo(this);
+        if(dist < mindist)
+        {
+            nearest = (*o);
+            mindist = dist;
+        }
+    }
     
     LOG("<[%s] %d attackers (%s)>",this->name.c_str(),attackers.size(),nearest?nearest->name.c_str():" - ");
 
@@ -179,43 +205,53 @@ void Monster::performTurn()
         return;
     }
     
-    /// check actions
+    /// check actions, steal, eat, etc
+    /// todo
     
     /// check can attack
     if( !attackers.empty() && NOT_MASK(behaviour,BehaviourPassive))
     {
-        LOG("<[%s] would attack target>",this->name.c_str());
+        LOG("<[%s] wants to attack target>",nearest->name.c_str());
         
-        // check all attackers to see if in melee range and ranaged range
-        // attack "nearest"
-        //if(attack)
+        Object *ranged = getWeaponForRanged();
+        if((ranged!=NULL) && (ranged->range >= mindist))
+        {
+            attack(nearest,ranged);
             return;
+        }
+        else if(mindist <= 1)
+        {
+            attack(nearest);
+            return;
+        }
     }
     
     /// check movement
-    if(HAS_MASK(behaviour,BehaviourAggressive))
+    if(nearest && HAS_MASK(behaviour,BehaviourAggressive))
     {
         move = towardAttacker(nearest);
+        LOG("<[%s] Wants to move toward target>",this->name.c_str());
     }
-    else if(HAS_MASK(behaviour,BehaviourTimid))
+    else if(nearest && HAS_MASK(behaviour,BehaviourTimid))
     {
         move = awayFromAttacker(nearest);
+        LOG("<[%s] Wants to move away from target>",this->name.c_str());
     }
     
     if(move.zero())
     {
        move = randomMove();
-       LOG("<[%s] Tried to move randomly>",this->name.c_str());
+       LOG("<[%s] Wants to move randomly>",this->name.c_str());
     }
     
     if(!move.zero() && map->checkMove(this, move.X, move.Y))
     {
-        LOG("<[%s] moved>",this->name.c_str());
+        //LOG("<[%s] moved>",this->name.c_str());
         map->moveObject(this,move.X,move.Y);
     }
     else
     {
-        LOG("<[%s] didn't move>",this->name.c_str());
+        //LOG("<[%s] didn't move>",this->name.c_str());
     }
 }
 
@@ -233,6 +269,22 @@ void Monster::calculateSight()
 	sightMap = new Lightmap(getPosition(),sight,getMap());
 }
 
+/// this is kinda ok for NPCs but isn't very good for player characters
+Object *Monster::getWeaponForRanged()
+{
+    foreachp(ObjectMap, obj, equipment)
+    {
+        Object *weapon = obj->second;
+        if(weapon->_flags.wieldable && (weapon->range > 1))
+        {
+            return weapon;
+        }
+    }
+    
+    return NULL;
+}
+
+/// this is more valid than the above ranged version, but still pretty meh
 Objects Monster::getWeaponsForMelee()
 {    
     Objects weapons;
@@ -272,6 +324,10 @@ Damages Monster::getMeleeDamages()
     {
         dmgs.push_back((*w)->getMeleeDamage());
     }
+    
+    if(dmgs.empty())
+        dmgs.push_back(Damage(1));
+    
     return dmgs;
 }
 

@@ -14,6 +14,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <cmath>
 
 #include "SDL/SDL.h"
 
@@ -41,6 +42,8 @@ public:
 
     bool operator==(Point &other) { return other.X == X && other.Y == Y; };
     bool operator!=(Point &other) { return other.X != X || other.Y != Y; };
+    
+    float distance(Point b) { return sqrtf( powf(X-b.X, 2) + powf(Y-b.Y, 2)); };
 };
 
 typedef std::list<Point> Points;

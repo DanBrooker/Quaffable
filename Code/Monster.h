@@ -20,7 +20,9 @@ typedef enum {
 	SpeedFrozen,
 	SpeedSlow,
 	SpeedNormal,
-	SpeedFast
+	SpeedFast,
+    // Keep SpeedCount at bottom
+    SpeedCount
 } Speed;
 
 #define BehaviourNone       1<<0
@@ -29,7 +31,6 @@ typedef enum {
 #define BehaviourDefensive  1<<3
 #define BehaviourFlees      1<<4
 #define BehaviourTimid      1<<5
-#define BehaviourPrey       1<<6
 
 typedef int BehaviourMask;
 
@@ -55,55 +56,58 @@ typedef struct {
 
 class Monster: public Object
 {
-	protected:
-		MonsterFlags _flags;
-		Lightmap *sightMap;
-		
-        unsigned hp,maxhp;
-        unsigned mp,maxmp;
+protected:
+    MonsterFlags _flags;
+    Lightmap *sightMap;
     
-        ObjectMap *equipment;
-    
-        WorldCoord randomMove();
-        WorldCoord towardAttacker(Object *attacker);
-        WorldCoord awayFromAttacker(Object *attacker);
-    
-        Objects attackers;
-		
-	public:
+    unsigned hp,maxhp;
+    unsigned mp,maxmp;
 
-		unsigned sight;
-		Speed speed;
-        BehaviourMask behaviour;
-	
-		Monster();
-		Monster(Ascii *ascii);
+    ObjectMap *equipment;
+
+    WorldCoord randomMove();
+    WorldCoord towardAttacker(Object *attacker);
+    WorldCoord awayFromAttacker(Object *attacker);
+
+    Objects attackers;
     
-        int getHP();
-        int adjustHP(int delta);
-        void setHP(int hitpoints);
-        std::string hpDescription();
-        
-        int getMaxHP();
-        void setMaxHP(int maxHitPoints);
+public:
+
+    unsigned sight;
+    Speed speed;
+    BehaviourMask behaviour;
+
+    Monster();
+    Monster(Ascii *ascii);
+
+    int getHP();
+    int adjustHP(int delta);
+    void setHP(int hitpoints);
+    std::string hpDescription();
     
-        Objects getWeaponsForMelee();
+    int getMaxHP();
+    void setMaxHP(int maxHitPoints);
+
+    Objects getWeaponsForMelee();
+    Object *getWeaponForRanged(); 
+
+    virtual Damages getMeleeDamages();
+
+    virtual void dumpInventory();
     
-        virtual Damages getMeleeDamages();
+    virtual void updateAscii();
+    virtual void performTurn();
+
+    void calculateSight();
+    virtual bool canSee(int x, int y);
     
-        virtual void dumpInventory();
-		
-		virtual void updateAscii();
-		virtual void performTurn();
-	
-		void calculateSight();
-		virtual bool canSee(int x, int y);
-		
-		static void load();
+    static void load();
     
-        virtual void onDeath();
-        virtual void onDamagedBy(Object *attacker,Damage damage);
-//        virtual void onHealedBy(Object *attacker,Damage damage);
+    void attack(Object *target, Object *weapon=NULL); // if weapon is NULL assumes melee
+
+    virtual void onDeath();
+    virtual void onDamagedBy(Object *attacker,Damage damage);
+//  virtual void onHealedBy(Object *attacker,Damage damage);
 };
 
 inline std::string stringForSpeed(Speed s)

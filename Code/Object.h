@@ -41,6 +41,7 @@ class Object {
 		std::string shortDescription;
 		std::string longDescription;
         float weight;
+        int range;
 		
 		ObjectFlags _flags;
 				
@@ -80,6 +81,8 @@ class Object {
         virtual void onDamagedBy(Object *attacker,Damage damage);
         virtual void onHealedBy(Object *attacker,Damage damage);
         virtual void onDamagedObject(Object *target,Damage damage);
+    
+        float distanceTo(Object *object);
 };
 
 #endif /* OBJECT_H_INC  */

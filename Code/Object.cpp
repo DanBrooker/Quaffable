@@ -19,6 +19,7 @@ Object::Object()
 	_flags.passable = NO;
 	_flags.transparent = NO;
     weight = 0.1;
+    range = 1;
 }
 
 Object::Object(Ascii *asc) 
@@ -28,6 +29,7 @@ Object::Object(Ascii *asc)
 	_flags.passable = YES;
 	_flags.transparent = YES;
     weight = 0.1;
+    range = 1;
 }
 
 Object::Object(AsciiGroup *asc)
@@ -37,6 +39,7 @@ Object::Object(AsciiGroup *asc)
 	_flags.passable = YES;
 	_flags.transparent = YES;
     weight = 0.1;
+    range = 1;
 }
 
 void Object::removeFromTile()
@@ -136,7 +139,7 @@ void Object::dumpInventory()
 
 void Object::dropInventoryObject(Object *object)
 {
-    
+    // todo
 }
 
 Damage Object::getMeleeDamage()
@@ -147,7 +150,7 @@ Damage Object::getMeleeDamage()
 Damage Object::calculateMeleeDamageFrom(Object *object)
 {
     Damage raw = object->getMeleeDamage();
-    // reduce damage from armour, resistances, 
+    // reduce damage from armour, resistances, whatever 
     
     return raw;
 }
@@ -175,4 +178,9 @@ void Object::onHealedBy(Object *attacker,Damage damage)
 void Object::onDamagedObject(Object *target,Damage damage)
 {
     
+}
+
+float Object::distanceTo(Object *object)
+{
+    return getPosition().distance(object->getPosition());
 }
