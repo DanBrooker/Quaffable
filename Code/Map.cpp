@@ -242,16 +242,6 @@ bool Map::checkCombat(Monster *monster, int i, int j)
 	return false;
 }
 
-Objects *Map::getAggressors(Object *object)
-{
-    return new Objects();
-}
-
-Objects *Map::getTargets(Object *object)
-{
-    return new Objects();
-}
-
 bool Map::checkAction(Object *object, int i, int j)
 {
     Tile tile = tiles[ARRAY2D(i,j,size)];
@@ -265,6 +255,130 @@ bool Map::checkAction(Object *object, int i, int j)
 	return false;
 }
 
+#define plot(x,y) end=Point(x,y); LOG("<[LOS] %d,%d>",x,y)
+
+/// Bresenham
+/// http://roguebasin.roguelikedevelopment.org/index.php/Bresenham%27s_Line_Algorithm
+// Could probably extract this into a Bresham class for other line purposes
+bool Map::lineOfSight(Point a,Point b)
+{
+    int x1 = a.X;
+    int y1 = a.Y;
+    int x2 = b.X;
+    int y2 = b.Y;
+    
+    Point end;
+    
+    // if x1 == x2 or y1 == y2, then it does not matter what we set here
+    int delta_x(x2 - x1);
+    signed char ix((delta_x > 0) - (delta_x < 0));
+    delta_x = std::abs(delta_x) << 1;
+    
+    int delta_y(y2 - y1);
+    signed char iy((delta_y > 0) - (delta_y < 0));
+    delta_y = std::abs(delta_y) << 1;
+    
+    plot(x1, y1);
+    
+    if (delta_x >= delta_y)
+    {
+        // error may go below zero
+        int error(delta_y - (delta_x >> 1));
+        
+        while (x1 != x2)
+        {
+            if (error >= 0)
+            {
+                if (error || (ix > 0))
+                {
+                    y1 += iy;
+                    error -= delta_x;
+                }
+                // else do nothing
+            }
+            // else do nothing
+            
+            x1 += ix;
+            error += delta_y;
+            
+            plot(x1, y1);
+        }
+    }
+    else
+    {
+        // error may go below zero
+        int error(delta_x - (delta_y >> 1));
+        
+        while (y1 != y2)
+        {
+            if (error >= 0)
+            {
+                if (error || (iy > 0))
+                {
+                    x1 += ix;
+                    error -= delta_y;
+                }
+                // else do nothing
+            }
+            // else do nothing
+            
+            y1 += iy;
+            error += delta_x;
+            
+            plot(x1,y1);
+        }
+    }
+    
+    return end == b;
+}
+
+Objects Map::getVisibleMonsters(Object *orgin,int range)
+{
+    Objects visible;
+    Point p1 = orgin->getPosition();
+    
+    int range_squared = range * range;
+    
+    foreach(Monsters, m, monsters)
+    {
+        Point p2 = (*m)->getPosition();
+        int dx = p1.X-p2.X;
+        int dy = p1.Y-p2.Y;
+        if((dx*dx)+(dy*dy) < range_squared)
+        {
+            if(lineOfSight(p1, p2))
+            {
+                visible.push_back((*m));
+            }
+        }
+    }
+    
+    return visible;
+}
+
+Objects Map::getVisibleObjects(Object *orgin,int range)
+{
+    Objects visible;
+    Point p1 = orgin->getPosition();
+    
+    int range_squared = range * range;
+    
+    foreach(Objects, o, objects)
+    {
+        Point p2 = (*o)->getPosition();
+        int dx = p1.X-p2.X;
+        int dy = p1.Y-p2.Y;
+        if((dx*dx)+(dy*dy) < range_squared)
+        {
+            if(lineOfSight(p1, p2))
+            {
+                visible.push_back((*o));
+            }
+        }
+    }
+    
+    return visible;
+}
 
 void Map::update(Speed turnSpeed)
 {

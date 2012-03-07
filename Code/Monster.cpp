@@ -128,12 +128,12 @@ WorldCoord Monster::randomMove()
     return random;
 }
 
-WorldCoord Monster::towardTargets(Objects *targets)
+WorldCoord Monster::towardAttacker(Object *target)
 {
     return randomMove();
 }
 
-WorldCoord Monster::awayFromTargets(Objects *targets)
+WorldCoord Monster::awayFromAttacker(Object *target)
 {
     return randomMove();
 }
@@ -146,11 +146,15 @@ void Monster::performTurn()
     WorldCoord move;
     Map *map = getMap();
     
-    Objects *aggressors = map->getAggressors(this);
-    Objects *targets = map->getTargets(this);
+    if(HAS_MASK(behaviour,BehaviourAggressive)||HAS_MASK(behaviour,BehaviourTimid))
+    {
+        // check for people to attack
+        attackers = map->getVisibleMonsters(this,sight);
+    }
     
-    LOG("<[%s] %d targets>",this->name.c_str(),targets->size());
-    LOG("<[%s] %d aggressors>",this->name.c_str(),aggressors->size());
+    Object *nearest = NULL;
+    
+    LOG("<[%s] %d attackers (%s)>",this->name.c_str(),attackers.size(),nearest?nearest->name.c_str():" - ");
 
     /// check flee
     if(HAS_MASK(behaviour,BehaviourFlees))
@@ -158,75 +162,61 @@ void Monster::performTurn()
         if(HAS_MASK(behaviour,BehaviourAggressive) && hp > (maxhp*0.2))
         {
             LOG("<[%s] too aggressive to flee>",this->name.c_str());
-//            if(targets && !targets->empty())
-//            {
-//                move = towardTargets(targets);
-//                LOG("<[%s] move toward target>",this->name.c_str());
-//            }
-//            else
-//            {
-//                move = randomMove();
-//                LOG("<[%s] moved randomly>",this->name.c_str());
-//            }
         }
         else
         {
-            if(targets && !targets->empty())
+            if(!attackers.empty())
             {
-                move = awayFromTargets(targets);
+                move = awayFromAttacker(nearest);
                 LOG("<[%s] fled>",this->name.c_str());
             }
-//            else
-//            {
-//                move = randomMove();
-//                DLOG("[%s] moved randomly>",this->name.c_str());
-//            }
         }
     }
     
-    if(move.zero() && map->checkMove(this, move.X, move.Y))
+    if(!move.zero() && map->checkMove(this, move.X, move.Y))
     {
         map->moveObject(this,move.X,move.Y);
         return;
     }
     
+    /// check actions
     
     /// check can attack
-    if(attacking || HAS_MASK(behaviour,BehaviourAggressive))
+    if( !attackers.empty() && NOT_MASK(behaviour,BehaviourPassive))
     {
-        if(!targets->empty())
-        {
-            LOG("<[%s] would attack target>",this->name.c_str());
-        }
+        LOG("<[%s] would attack target>",this->name.c_str());
+        
+        // check all attackers to see if in melee range and ranaged range
+        // attack "nearest"
+        //if(attack)
+            return;
     }
     
     /// check movement
+    if(HAS_MASK(behaviour,BehaviourAggressive))
+    {
+        move = towardAttacker(nearest);
+    }
+    else if(HAS_MASK(behaviour,BehaviourTimid))
+    {
+        move = awayFromAttacker(nearest);
+    }
     
-    /// random movement
+    if(move.zero())
+    {
+       move = randomMove();
+       LOG("<[%s] Tried to move randomly>",this->name.c_str());
+    }
     
-    
-    
-//        if(HAS_MASK(behaviour,BehaviourPassive)/*behaviour == (behaviour & BehaviourPassive)*/ )
-//        {
-//            move = randomMove();
-//            
-//            if(map->checkMove(this, move.X, move.Y))
-//            {
-//                map->moveObject(this,move.X,move.Y);
-//                //break;
-//            }
-//        }
-//        else if(HAS_MASK(behaviour,BehaviourDefensive) && !attacking)
-//        {
-//            move = randomMove();
-//            
-//            
-//        }
-//        else if(HAS_MASK(behaviour,BehaviourDefensive) && attacking)
-//        {
-//            //break;
-//        }
-
+    if(!move.zero() && map->checkMove(this, move.X, move.Y))
+    {
+        LOG("<[%s] moved>",this->name.c_str());
+        map->moveObject(this,move.X,move.Y);
+    }
+    else
+    {
+        LOG("<[%s] didn't move>",this->name.c_str());
+    }
 }
 
 bool Monster::canSee(int x, int y)
@@ -287,8 +277,7 @@ Damages Monster::getMeleeDamages()
 
 void Monster::onDamagedBy(Object *attacker,Damage damage)
 {
-    // attack the attacker if monster
-    attacking = true;
+    attackers.push_back(attacker);
 }
 
 void Monster::dumpInventory()

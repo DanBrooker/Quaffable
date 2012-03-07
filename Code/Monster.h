@@ -28,6 +28,8 @@ typedef enum {
 #define BehaviourAggressive 1<<2
 #define BehaviourDefensive  1<<3
 #define BehaviourFlees      1<<4
+#define BehaviourTimid      1<<5
+#define BehaviourPrey       1<<6
 
 typedef int BehaviourMask;
 
@@ -62,18 +64,17 @@ class Monster: public Object
     
         ObjectMap *equipment;
     
-        BehaviourMask behaviour;
-    
         WorldCoord randomMove();
-        WorldCoord towardTargets(Objects *targets);
-        WorldCoord awayFromTargets(Objects *targets);
+        WorldCoord towardAttacker(Object *attacker);
+        WorldCoord awayFromAttacker(Object *attacker);
     
-        bool attacking;
+        Objects attackers;
 		
 	public:
 
 		unsigned sight;
 		Speed speed;
+        BehaviourMask behaviour;
 	
 		Monster();
 		Monster(Ascii *ascii);

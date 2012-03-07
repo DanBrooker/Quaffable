@@ -316,8 +316,7 @@ class Ascii
     
         Ascii();
         Ascii(SpriteIndex index, float red,float green, float blue);
-        Ascii(SpriteIndex index, Colour fg);
-		Ascii(SpriteIndex index, Colour fg,Colour bg);
+		Ascii(SpriteIndex index, Colour fg = Colour::white(),Colour bg = Colour::black());
 		
 		// copy operator
 		Ascii& operator=(const Ascii& a);

@@ -24,13 +24,6 @@ Ascii::Ascii(SpriteIndex index, float red,float green, float blue)
     Background = Colour::black();
 }
 
-Ascii::Ascii(SpriteIndex index, Colour fg)
-{
-    Index = index;
-    Foreground = fg;
-    Background = Colour::black();
-}
-
 Ascii::Ascii(SpriteIndex index, Colour fg,Colour bg)
 {
     Index = index;
@@ -38,8 +31,10 @@ Ascii::Ascii(SpriteIndex index, Colour fg,Colour bg)
     Background = bg;
 }
 
-Ascii& Ascii::operator=(const Ascii& a) {
-    if (this != &a) { 
+Ascii& Ascii::operator=(const Ascii& a) 
+{
+    if (this != &a) 
+    { 
 		Index = a.Index;
 		Foreground = a.Foreground;
 		Background = a.Background;

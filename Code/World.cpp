@@ -10,6 +10,7 @@
 #include "World.h"
 #include "SDL/SDL.h"
 #include "Map.h"
+#include "Roguelike.h"
 
 World::World()
 {
@@ -62,6 +63,7 @@ void World::updateWorld()
 	if(map->getPlayer()->speed == turnSpeed)
 	{
 		map->getPlayer()->calculateSight();
+        LOG("<([ - - - - - - Turn End - - - - - - - ])>");
 		return;
 	}
 	

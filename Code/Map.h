@@ -69,10 +69,9 @@ class Map
 
 		bool getTransparent(int x, int y);
     
-        // Conflict
-    
-        Objects *getAggressors(Object *object);
-        Objects *getTargets(Object *object);
+        bool lineOfSight(Point a,Point b);
+        Objects getVisibleObjects(Object *orgin,int range);
+        Objects getVisibleMonsters(Object *orgin,int range);
 };
 
 #endif /* MAP_H_INC  */
