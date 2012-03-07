@@ -59,7 +59,7 @@ void FantasyRL::init_world()
 	
 	rnd =  new Random(42);
 	
-	sprite = new Sprite(filenameWithFormat("tileset.png") /*"FantasyRL.app/Contents/Resources/tileset.png"*/,16);
+	sprite = new Sprite("FantasyRL.app/Contents/Resources/tileset.png",16);
     world = new World();
     
     world->setMap(new Map(worldSize));
@@ -77,21 +77,12 @@ void FantasyRL::init_world()
 	world->getMap()->createRoom(Rect(50,20,20,10),Ascii(4,Colour(1.0f,1.0f,1.0f),Colour(0.0f,0.3f,0.2f)));
 	world->getMap()->createRoom(Rect(70,20,20,10),Ascii(4,Colour(1.0f,1.0f,1.0f),Colour(0.0f,0.3f,0.2f)));
     
-    //- Test Monster
-//    Ascii *ascii = new Ascii(LETTER_k+16,Colour::cyan(),Colour::black());
-//	Monster *monster = new Monster(ascii);
-//    monster->name = "Kobold";
-//	monster->speed = SpeedNormal;
-//    monster->setMaxHP(2);
-//    monster->behaviour = BehaviourTimid;
-//	world->getMap()->addObject(20,20,monster);
-//	world->getMap()->monsters.push_back(monster);
     
     for(int i=0;i<10;i++)
     {
         Ascii *ascii = new Ascii(LETTER_k+16,Colour(0,1,1),Colour(0,0,0));
         Monster *monster = new Monster(ascii);
-        monster->name = "Kobold";
+        monster->name = stringFormat("Kobold< %d>",i);
         monster->speed = (Speed)(rand()%SpeedCount);
         monster->setMaxHP(rand()%4);
         monster->behaviour = (rand()%BehaviourCount);

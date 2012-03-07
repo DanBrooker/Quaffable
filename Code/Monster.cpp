@@ -130,12 +130,57 @@ WorldCoord Monster::randomMove()
 
 WorldCoord Monster::towardAttacker(Object *target)
 {
-    return randomMove();
+    // two main movements are possible in four connected, effectively one square in the x or y toward the target, eg left or up, up or right, down or left, down or right
+    WorldCoord move;
+    WorldCoord p = getPosition();
+    WorldCoord t = getPosition();
+    
+    int xdir = p.X > t.X ? -1 : 1;
+    int ydir = p.Y > t.Y ? -1 : 1;
+    
+    // check move in X dir
+    move = WorldCoord(p.X+xdir,p.Y);
+    if(getMap()->checkMove(this, move.X, move.Y))
+    {
+        return move;
+    }
+    
+    // check move in Y dir
+    move = WorldCoord(p.X,p.Y+ydir);
+    if(getMap()->checkMove(this, move.X, move.Y))
+    {
+        return move;
+    }
+       
+    return  WorldCoord(0,0);
 }
 
 WorldCoord Monster::awayFromAttacker(Object *target)
 {
-    return randomMove();
+    /// same as above just opposite direction
+    
+    WorldCoord move;
+    WorldCoord p = getPosition();
+    WorldCoord t = getPosition();
+    
+    int xdir = p.X > t.X ? 1 : -1;
+    int ydir = p.Y > t.Y ? 1 : -1;
+    
+    // check move in X dir
+    move = WorldCoord(p.X+xdir,p.Y);
+    if(getMap()->checkMove(this, move.X, move.Y))
+    {
+        return move;
+    }
+    
+    // check move in Y dir
+    move = WorldCoord(p.X,p.Y+ydir);
+    if(getMap()->checkMove(this, move.X, move.Y))
+    {
+        return move;
+    }
+    
+    return  WorldCoord(0,0);
 }
 
 void Monster::attack(Object *t, Object *weapon)
