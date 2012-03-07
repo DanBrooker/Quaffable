@@ -78,14 +78,14 @@ void FantasyRL::init_world()
 	world->getMap()->createRoom(Rect(70,20,20,10),Ascii(4,Colour(1.0f,1.0f,1.0f),Colour(0.0f,0.3f,0.2f)));
     
     //- Test Monster
-    Ascii *ascii = new Ascii(LETTER_k+16,Colour::cyan(),Colour::black());
-	Monster *monster = new Monster(ascii);
-    monster->name = "Kobold";
-	monster->speed = SpeedNormal;
-    monster->setMaxHP(2);
-    monster->behaviour = BehaviourPassive;
-	world->getMap()->addObject(20,20,monster);
-	world->getMap()->monsters.push_back(monster);
+//    Ascii *ascii = new Ascii(LETTER_k+16,Colour::cyan(),Colour::black());
+//	Monster *monster = new Monster(ascii);
+//    monster->name = "Kobold";
+//	monster->speed = SpeedNormal;
+//    monster->setMaxHP(2);
+//    monster->behaviour = BehaviourTimid;
+//	world->getMap()->addObject(20,20,monster);
+//	world->getMap()->monsters.push_back(monster);
     
     for(int i=0;i<10;i++)
     {
@@ -94,6 +94,7 @@ void FantasyRL::init_world()
         monster->name = "Kobold";
         monster->speed = (Speed)(rand()%SpeedCount);
         monster->setMaxHP(rand()%4);
+        monster->behaviour = (rand()%BehaviourCount);
         world->getMap()->addObject(rand()%100,rand()%100,monster);
         world->getMap()->monsters.push_back(monster);
     }

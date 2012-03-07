@@ -31,6 +31,7 @@ typedef enum {
 #define BehaviourDefensive  1<<3
 #define BehaviourFlees      1<<4
 #define BehaviourTimid      1<<5
+#define BehaviourCount      1<<6
 
 typedef int BehaviourMask;
 
