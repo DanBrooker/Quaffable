@@ -25,6 +25,13 @@ Tile::Tile(int i, int j)
 	Position = Point(i,j);
 }
 
+Tile::~Tile()
+{
+    delete objects;
+    lastAscii = NULL;
+    parent = NULL;
+}
+
 void Tile::addObject(Object *object)
 {
 	object->setParent(this);

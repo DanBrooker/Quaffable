@@ -33,7 +33,7 @@ class Tile {
 		
 		Tile();
 		Tile(int i, int j);
-		
+        ~Tile();
 		Ascii *getTopAscii(bool visible);
 		void addObject(Object *object);
 		void removeObject(Object *object);

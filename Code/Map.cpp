@@ -18,14 +18,14 @@ Map::Map(unsigned Size)
 	size = Size;
 	tex = NULL;
 	col = NULL;
-	tiles = (Tile*)malloc( sizeof(Tile) *size*size );
+	tiles = (Tile**)malloc( sizeof(Tile*) *size*size );
 	
 	for(int i=0;i< size;i++)
 	{
 		for(int j=0;j<size;j++)
 		{
-			tiles[ARRAY2D(i,j,size)] = Tile(i,j);
-			tiles[ARRAY2D(i,j,size)].parent = this;
+			tiles[ARRAY2D(i,j,size)] = new Tile(i,j);
+			tiles[ARRAY2D(i,j,size)]->parent = this;
 		}
 	}
     
@@ -54,7 +54,7 @@ void Map::generate()
 			
 			Object *o = new Object(new Ascii(ascii[rand()%ascii.size()],foreground,background));
 			
-			tiles[ARRAY2D(i,j,size)].Position = Point(i,j);
+			tiles[ARRAY2D(i,j,size)]->Position = Point(i,j);
 			o->setPassable(true);
 			addObject(i,j,o);
         }
@@ -148,7 +148,7 @@ void Map::createRoom(Rect rect,Ascii floor)
 
 void Map::addObject(int x, int y,Object *object)
 {
-	tiles[ARRAY2D(x,y,size)].addObject(object);
+	tiles[ARRAY2D(x,y,size)]->addObject(object);
 }
 
 void Map::removeObject(Object *object)
@@ -158,20 +158,24 @@ void Map::removeObject(Object *object)
 
 void Map::moveObject(Object *object, int i, int j)
 {
+    //Point p = object->getPosition();
+    int x = (i) < 0 ? size+i : (i)%size;
+	int y = (j) < 0 ? size+j : (j)%size;
+    
 	object->removeFromTile();
-	if(i >= size) 
-		i = size - i;
-    if(j >= size)
-        j = size - j;
-	tiles[ARRAY2D(i,j,size)].addObject(object);
+//	if(i >= size) 
+//		i = size - i;
+//    if(j >= size)
+//        j = size - j;
+	tiles[ARRAY2D(x,y,size)]->addObject(object);
 }
 
 
 bool Map::adjustPlayer(int i, int j)
 {
 	Point p = player->getParent()->Position;
-	int x = ((p.X+i) < 0 ? size-p.X+i : (p.X+i)%size);
-	int y = ((p.Y+j) < 0 ? size-p.Y+j : (p.Y+j)%size);
+	int x = ((p.X+i) < 0 ? size+(p.X+i) : (p.X+i)%size);
+	int y = ((p.Y+j) < 0 ? size+(p.Y+j) : (p.Y+j)%size);
 	if(checkMove(player,x,y))
 	{
 		moveObject(player,x,y);
@@ -211,21 +215,26 @@ void World::setParent(Display* parent)
 
 bool Map::checkMove(Object *object, int i, int j)
 {
+    int x = (i) < 0 ? size+i : (i)%size;
+	int y = (j) < 0 ? size+j : (j)%size;
 	//printf("Move %d\n",TILE(i,j)._flags.passable);
-    Tile tile = tiles[ARRAY2D(i,j,size)];
-    bool passable = tile._flags.passable==YES;
+    Tile *tile = tiles[ARRAY2D(x,y,size)];
+    bool passable = tile->_flags.passable==YES;
     
 	return passable;
 }
 
 bool Map::checkCombat(Monster *monster, int i, int j)
 {
-    Tile tile = tiles[ARRAY2D(i,j,size)];
-    bool passable = tile._flags.passable==YES;
+    int x = (i) < 0 ? size+i : (i)%size;
+	int y = (j) < 0 ? size+j : (j)%size;
+    
+    Tile *tile = tiles[ARRAY2D(x,y,size)];
+    bool passable = tile->_flags.passable==YES;
     
     if(!passable)
     {
-        Object *object = tile.getTopObject();
+        Object *object = tile->getTopObject();
         Monster *target = dynamic_cast<Monster *>(object);
         if(target != NULL)
         {
@@ -244,8 +253,11 @@ bool Map::checkCombat(Monster *monster, int i, int j)
 
 bool Map::checkAction(Object *object, int i, int j)
 {
-    Tile tile = tiles[ARRAY2D(i,j,size)];
-    bool passable = tile._flags.passable==YES;
+    int x = (i) < 0 ? size+i : (i)%size;
+	int y = (j) < 0 ? size+j : (j)%size;
+    
+    Tile *tile = tiles[ARRAY2D(x,y,size)];
+    bool passable = tile->_flags.passable==YES;
     
     if(!passable)
     {
@@ -425,7 +437,7 @@ void Map::setBackgroundColourPointer(float *colourPointer)
 
 bool Map::getTransparent(int x, int y)
 {
-	return tiles[ARRAY2D(x,y,size)]._flags.transparent;
+	return tiles[ARRAY2D(x,y,size)]->_flags.transparent;
 }
 
 void Map::display()
@@ -446,7 +458,7 @@ void Map::display()
 			int colI = ARRAY2D(x,y,rect.Width)*16;
 			int pos = ARRAY2D((i < 0 ? size+i : i%size),(j < 0 ? size+j : j%size),size);
 			
-			displayTile(&tex[texI],&col[colI],&bgCol[colI],&tiles[pos],player);
+			displayTile(&tex[texI],&col[colI],&bgCol[colI],tiles[pos],player);
 		}
 	}
                    

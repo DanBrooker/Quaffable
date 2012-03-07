@@ -51,7 +51,12 @@ LocalCoord Lightmap::world2local(WorldCoord w)
 WorldCoord Lightmap::local2world(LocalCoord l)
 {
 	WorldCoord me = position;
-	WorldCoord world(me.X+l.X-radius,me.Y+l.Y-radius);
+    
+    unsigned width = map->size;
+    int x = (me.X+l.X-radius) % width;
+    int y = (me.Y+l.Y-radius) % width;
+    
+	WorldCoord world(x,y);
 	return world;
 }
 

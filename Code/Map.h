@@ -24,9 +24,9 @@ class Monster;
 class Map
 {
 	private:
-		unsigned size;
+		
 		float *tex,*col,*bgCol;
-		Tile *tiles;
+		Tile **tiles;
     
         Monster *player;
 		
@@ -37,7 +37,8 @@ class Map
         Monsters monsters;
         Objects	 objects;
         Rect	visibleRect;
-
+        unsigned size;
+    
 		Map(unsigned size);
 		
         void generate();

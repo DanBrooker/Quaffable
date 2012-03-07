@@ -92,7 +92,7 @@ void FantasyRL::init_world()
         Ascii *ascii = new Ascii(LETTER_k+16,Colour(0,1,1),Colour(0,0,0));
         Monster *monster = new Monster(ascii);
         monster->name = "Kobold";
-        monster->setTransparent(false);
+        monster->setTransparent(true);
         monster->setPassable(false);
         monster->speed = SpeedFast;
         monster->setMaxHP(rand()%4);
