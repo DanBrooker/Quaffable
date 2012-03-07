@@ -32,35 +32,35 @@ typedef struct
 } ObjectFlags;
 
 class Object {
-	protected:
-		AsciiGroup *asciis;
-        Objects *inventory;
-	public:
-		Tile *parent;
-		std::string name;
-		std::string shortDescription;
-		std::string longDescription;
-        float weight;
-        int range;
-		
-		ObjectFlags _flags;
-				
-		Object();
-		Object(Ascii *ascii);
-		Object(AsciiGroup *ascii);
-		~Object();
-		void setParent(Tile *tile);
-		Tile* getParent();
-		
-        Map *getMap();
-		void removeFromTile();
-        virtual void onDeath();
-        virtual void onDamagedBy(Object *attacker,Damage damage);
-        virtual void onHealedBy(Object *attacker,Damage damage);
-        virtual void onDamagedObject(Object *target,Damage damage);
+protected:
+    AsciiGroup *asciis;
+    Objects *inventory;
+public:
+    Tile *parent;
+    std::string name;
+    std::string shortDescription;
+    std::string longDescription;
+    float weight;
+    int range;
     
-        float distanceTo(Object *object);
-
+    ObjectFlags _flags;
+    
+    Object();
+    Object(Ascii *ascii);
+    Object(AsciiGroup *ascii);
+    ~Object();
+    void setParent(Tile *tile);
+    Tile* getParent();
+    
+    Map *getMap();
+    void removeFromTile();
+    virtual void onDeath();
+    virtual void onDamagedBy(Object *attacker,Damage damage);
+    virtual void onHealedBy(Object *attacker,Damage damage);
+    virtual void onDamagedObject(Object *target,Damage damage);
+    
+    float distanceTo(Object *object);
+    
     Point getPosition();
     
     void setPassable(bool passable);
@@ -82,7 +82,7 @@ class Object {
     virtual Objects *getInventory();
     virtual void dumpInventory();
     void dropInventoryObject(Object *object);
-
+    
 };
 
 #endif /* OBJECT_H_INC  */
