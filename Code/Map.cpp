@@ -33,6 +33,20 @@ Map::Map(unsigned Size)
 	generate();
 }
 
+Map::~Map()
+{
+    for(int i=0;i< size;i++)
+	{
+		for(int j=0;j<size;j++)
+		{
+			tiles[ARRAY2D(i,j,size)]->parent = NULL;
+            delete tiles[ARRAY2D(i,j,size)];
+		}
+	}
+    free(tiles);
+    
+}
+
 void Map::generate()
 {
 	int i,j;

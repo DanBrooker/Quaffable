@@ -48,47 +48,47 @@ class Object {
 		Object();
 		Object(Ascii *ascii);
 		Object(AsciiGroup *ascii);
-		
+		~Object();
 		void setParent(Tile *tile);
 		Tile* getParent();
 		
         Map *getMap();
 		void removeFromTile();
-    
-        Point getPosition();
-		
-		void setPassable(bool passable);
-		bool passable();
-		
-		void setTransparent(bool transparent);
-		bool transparent();
-    
-        virtual Damage getMeleeDamage();
-        virtual Damage getThrowDamage();
-    
-        virtual Damage calculateMeleeDamageFrom(Object *object);
-		
-		Ascii* getAscii();
-		virtual void updateAscii();
-    
-        virtual void addObjectToInventory(Object *object);
-        virtual void removeObjectFromInventory(Object *object); 
-        virtual Objects *getInventory();
-        virtual void dumpInventory();
-        void dropInventoryObject(Object *object);
-    
         virtual void onDeath();
         virtual void onDamagedBy(Object *attacker,Damage damage);
         virtual void onHealedBy(Object *attacker,Damage damage);
         virtual void onDamagedObject(Object *target,Damage damage);
     
         float distanceTo(Object *object);
+
+    Point getPosition();
+    
+    void setPassable(bool passable);
+    bool passable();
+    
+    void setTransparent(bool transparent);
+    bool transparent();
+    
+    virtual Damage getMeleeDamage();
+    virtual Damage getThrowDamage();
+    
+    virtual Damage calculateMeleeDamageFrom(Object *object);
+    
+    Ascii* getAscii();
+    virtual void updateAscii();
+    
+    virtual void addObjectToInventory(Object *object);
+    virtual void removeObjectFromInventory(Object *object); 
+    virtual Objects *getInventory();
+    virtual void dumpInventory();
+    void dropInventoryObject(Object *object);
+
 };
 
 #endif /* OBJECT_H_INC  */
 
 /*
-
+ 
  ADOMs itemset:
  
  [  Armor, shields, cloaks, boots, girdles, gauntlets and helmets
@@ -107,9 +107,9 @@ class Object {
  $  Gold
  {  Musical Instruments
  "  Books
-
  
-Angband items:
+ 
+ Angband items:
  
  , : Food, Mushrooms
  | : Edged weapon
@@ -134,6 +134,6 @@ Angband items:
  § : Not used
  ' : Not used (too similar to ` and ´ maybe?)
  ° : Not used (Is this 7-Bit ASCII ? Edit: No, and § also isn't)
-
-*/
+ 
+ */
 

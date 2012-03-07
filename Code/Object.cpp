@@ -35,11 +35,22 @@ Object::Object(Ascii *asc)
 Object::Object(AsciiGroup *asc)
 {
 	parent = NULL;
-	asciis = asc;
+	asciis = asc;   //its assumed that we become the owners of asc
 	_flags.passable = YES;
 	_flags.transparent = YES;
     weight = 0.1;
     range = 1;
+}
+
+Object::~Object()
+{
+    //printf("deallocating object");
+    parent = NULL;
+    delete asciis;
+    asciis = NULL;
+    if (inventory != NULL) {
+        delete inventory;
+    }
 }
 
 void Object::removeFromTile()
@@ -99,7 +110,7 @@ bool Object::transparent()
 Ascii* Object::getAscii()
 {
     if(asciis == NULL)
-        return new Ascii();
+        asciis = new AsciiGroup(new Ascii());//return NULL; //new Ascii(); //cant just be allocating things and not concerned about releasing them
 	return asciis->currentAscii();
 }
 
