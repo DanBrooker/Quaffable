@@ -71,7 +71,13 @@ void Lightmap::setVisible(LocalCoord co)
 	int w = radius*2+1;
 	boolMap[ARRAY2D(co.X,co.Y,w)] = YES;
 }
-					
+	
+void Lightmap::setVisible(LocalCoord co, int debug)
+{
+	int w = radius*2+1;
+	boolMap[ARRAY2D(co.X,co.Y,w)] = debug;
+}
+
 bool Lightmap::pointInRange(Point a, Point b, int range)
 {
 	if(a.X==b.X)
@@ -87,8 +93,8 @@ void Lightmap::calculate()
 	//printf("Calculating boolMap\n\n");
 	if(boolMap!=NULL)
 		free(boolMap);
-	boolMap = (bool*)calloc( (radius*2+1) * (radius*2+1), sizeof(bool) );
-	
+	//boolMap = (bool*)calloc( (radius*2+1) * (radius*2+1), sizeof(bool) );
+	boolMap = (int*)calloc( (radius*2+1) * (radius*2+1), sizeof(int) );
 	static int mult[4][8] = {
 		{1,  0,  0, -1, -1,  0,  0,  1},
 		{0,  1, -1,  0,  0, -1,  1,  0},
@@ -101,70 +107,119 @@ void Lightmap::calculate()
 	WorldCoord pos = position;
 	setVisible(world2local(pos));
 	
-//	for(int i = 0;i < (radius*2+1) * (radius*2+1); i++)
-//	{
-//		printf("%d",boolMap[i]);
-//		if(i%(radius*2+1)==(radius*2))
-//			printf("\n");
-//	}
+    //printLightMap();
+}
+
+void Lightmap::printLightMap()
+{
+    printf("\n---\n");
+	for(int i = 0;i < (radius*2+1) * (radius*2+1); i++)
+	{
+        if (i == radius + (radius * (radius*2+1))) {
+            printf("@");
+        }
+        else if (boolMap[i] == 0) {
+            printf(" ");
+        }
+        else if (boolMap[i] == 1) {
+            printf(".");
+        }
+        else if (boolMap[i] == 2) {
+            printf("#");
+        }
+        else if (boolMap[i] == 9) {
+            printf("X");
+        }
+        else {
+            printf("%d",boolMap[i]);
+        }
+		
+		if(i%(radius*2+1)==(radius*2))
+			printf("\n");
+	}
 }
 
 void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,int yy,int id)
 {
 
-	WorldCoord pos = position;
+    //printf("beginning at depth: %d", id);
+	WorldCoord posWorld = position;
+    LocalCoord pos = world2local(posWorld);
 	int cx =pos.X, cy= pos.Y;
 
 	if(start < end)
 		return;
 	int radius_squared = radius*radius;
-	int new_start=0;
-	for(int j=row; j < radius; j++)
+	
+    float new_start=1.0f;
+	for(int j=row; j <= radius; j++)
 	{
+        bool newStartSet = false;
 		int dx = -j-1, dy = -j;
 		bool blocked = false;
         while(dx <= 0)
 		{
+            
 			dx++;
-			int X = cx + dx * xx + dy * xy;
-			int Y = cy + dx * yx + dy * yy;
+			int X = cx + (dx * xx) + (dy * xy);
+			int Y = cy + (dx * yx) + (dy * yy);
 			
-			WorldCoord world = WorldCoord(X, Y);
-			LocalCoord local = world2local(world);
+			LocalCoord local = LocalCoord(X,Y);//WorldCoord(X, Y);
+			WorldCoord world = local2world(local);
 			
-			float l_slope = (dx-0.5)/(dy+0.5), r_slope= (dx+0.5)/(dy-0.5);
+            if (dy < 0) {
+                
+            }
+            
+			float l_slope = ((float)dx-0.5f)/((float)dy+0.5f), r_slope= ((float)dx+0.5f)/((float)dy-0.5f);
 			if(start < r_slope)
+            {
 				continue;
+            }
 			else if(end > l_slope)
 				break;
-			else
-				if( (dx*dx + dy*dy) < radius_squared)
-					setVisible(local);
-			
-			if (blocked)
-			{
-				if(isBlocked(world))
-				{
-					new_start = r_slope;
-					continue;
-				}
-				else
-				{
-					blocked = false;
-				}
-				start = new_start;
-			}
-			else
-			{
-				if (isBlocked(world) && j <= radius)
-				{
-					blocked = true;
-					cast_light(j+1, start, l_slope, xx, xy, yx, yy, id+1);
-					new_start = r_slope;
-				}
-			}
+			else //Our light beam is touching this square; light it
+            {
+                int offset = id >0 ? id + 3 : 0;
+                
+                if( (dx*dx + dy*dy) < radius_squared)//ensure within sight range
+					setVisible(local,1+offset);
+                
+                
+                
+                if (blocked)
+                {
+                    if(isBlocked(world))
+                    {
+                        new_start = r_slope;
+                        newStartSet = true;
+                        continue;
+                    }
+                    else
+                    {
+                        blocked = false;
+                        if (newStartSet) {
+                            start = new_start;
+                            newStartSet = false;
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    if (isBlocked(world) && (j < radius))
+                    {
+                        blocked = true;
+                        cast_light(j+1, start, l_slope, xx, xy, yx, yy, id+1);
+                        new_start = r_slope;
+                        newStartSet = true;
+                    }
+                }
+            }
 		}
 		if(blocked)
+        {
 			break;
+        }
 	}
 }

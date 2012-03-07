@@ -16,27 +16,29 @@ class Ascii;
 
 class Lightmap
 {
-	protected:
-		Point position;
-		int radius;
-		bool* boolMap;
-        Map *map;
-		
-		LocalCoord world2local(WorldCoord w);
-		WorldCoord local2world(LocalCoord l);
-		bool isBlocked(WorldCoord co);
-		bool isVisible(LocalCoord co);
-		void setVisible(LocalCoord co);
-		virtual bool pointInRange(Point a, Point b, int range);
-		virtual void calculate();
-		void cast_light(int row, float start,float end,int xx,int xy,int yx,int yy,int id);	
+protected:
+    Point position;
+    int radius;
+    //bool* boolMap;
+    int* boolMap;
+    Map *map;
     
-	public:
-		Lightmap();
-		Lightmap(Point position,int radius,Map *map);
-		
-		virtual bool isLit(WorldCoord world);
-        virtual Ascii *filter(WorldCoord world,Ascii *ascii);
+    LocalCoord world2local(WorldCoord w);
+    WorldCoord local2world(LocalCoord l);
+    bool isBlocked(WorldCoord co);
+    bool isVisible(LocalCoord co);
+    void setVisible(LocalCoord co);
+    void setVisible(LocalCoord co, int debug);
+    virtual bool pointInRange(Point a, Point b, int range);
+    virtual void calculate();
+    void cast_light(int row, float start,float end,int xx,int xy,int yx,int yy,int id);	
+    void printLightMap();
+public:
+    Lightmap();
+    Lightmap(Point position,int radius,Map *map);
+    
+    virtual bool isLit(WorldCoord world);
+    virtual Ascii *filter(WorldCoord world,Ascii *ascii);
 };
 
 #endif /* LIGHTMAP_H_INC */
