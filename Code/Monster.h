@@ -13,6 +13,7 @@
 #include "Object.h"
 #include "Types.h"
 #include "Lightmap.h"
+//#include "Stringer.h"
 
 class Weapon;
 
@@ -125,7 +126,41 @@ inline std::string stringForSpeed(Speed s)
 		case SpeedFast:
 			name = "Fast";
 			break;
+        default:
+            name = "Frozen";
+            break;
 	}
+	return name;
+}
+
+inline std::string stringForBehaviour(BehaviourMask behaviour)
+{
+	std::string name = "";
+    
+    for(int i=0; i< BehaviourCount; i++)
+    {
+        if(NOT_MASK(behaviour,i))
+            continue;
+        
+        switch(i)
+        {
+            case BehaviourPassive:
+                name += "Passive ";
+                break;
+            case BehaviourAggressive:
+                name += "Aggressive ";
+                break;
+            case BehaviourDefensive:
+                name += "Defensive ";
+                break;
+            case BehaviourFlees:
+                name += "Flees ";
+                break;
+            case BehaviourTimid:
+                name += "Timid ";
+                break;
+        }
+    }
 	return name;
 }
 

@@ -94,6 +94,8 @@ int Monster::getMaxHP()
 void Monster::setMaxHP(int maxHitPoints)
 {
     maxhp = maxHitPoints;
+    if(maxhp <= 0)
+        maxhp = 1;
     hp = maxhp;
 }
 
@@ -225,7 +227,8 @@ void Monster::performTurn()
         }
     }
     
-    LOG("<[%s] %d attackers (%s)>",this->name.c_str(),attackers.size(),nearest?nearest->name.c_str():" - ");
+    if(!attackers.empty())
+        LOG("<[%s] %d attackers (nearest %s)>",this->name.c_str(),attackers.size(),nearest?nearest->name.c_str():" - ");
 
     /// check flee
     if(HAS_MASK(behaviour,BehaviourFlees))
@@ -383,7 +386,7 @@ void Monster::onDamagedBy(Object *attacker,Damage damage)
 
 void Monster::dumpInventory()
 {
-    Object::dumpInventory();
+   // Object::dumpInventory();
     if(equipment == NULL)
         return;
     

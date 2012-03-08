@@ -361,23 +361,26 @@ bool Map::lineOfSight(Point a,Point b)
     return end == b;
 }
 
-Objects Map::getVisibleMonsters(Object *orgin,int range)
+Objects Map::getVisibleMonsters(Object *origin,int range)
 {
     Objects visible;
-    Point p1 = orgin->getPosition();
+    Point p1 = origin->getPosition();
     
     int range_squared = range * range;
     
     foreach(Monsters, m, monsters)
     {
-        Point p2 = (*m)->getPosition();
-        int dx = p1.X-p2.X;
-        int dy = p1.Y-p2.Y;
-        if((dx*dx)+(dy*dy) < range_squared)
+        if((*m)!=origin)
         {
-            if(lineOfSight(p1, p2))
+            Point p2 = (*m)->getPosition();
+            int dx = p1.X-p2.X;
+            int dy = p1.Y-p2.Y;
+            if((dx*dx)+(dy*dy) < range_squared)
             {
-                visible.push_back((*m));
+                if(lineOfSight(p1, p2))
+                {
+                    visible.push_back((*m));
+                }
             }
         }
     }
@@ -385,23 +388,26 @@ Objects Map::getVisibleMonsters(Object *orgin,int range)
     return visible;
 }
 
-Objects Map::getVisibleObjects(Object *orgin,int range)
+Objects Map::getVisibleObjects(Object *origin,int range)
 {
     Objects visible;
-    Point p1 = orgin->getPosition();
+    Point p1 = origin->getPosition();
     
     int range_squared = range * range;
     
     foreach(Objects, o, objects)
     {
-        Point p2 = (*o)->getPosition();
-        int dx = p1.X-p2.X;
-        int dy = p1.Y-p2.Y;
-        if((dx*dx)+(dy*dy) < range_squared)
+        if((*o)!=origin)
         {
-            if(lineOfSight(p1, p2))
+            Point p2 = (*o)->getPosition();
+            int dx = p1.X-p2.X;
+            int dy = p1.Y-p2.Y;
+            if((dx*dx)+(dy*dy) < range_squared)
             {
-                visible.push_back((*o));
+                if(lineOfSight(p1, p2))
+                {
+                    visible.push_back((*o));
+                }
             }
         }
     }
@@ -419,7 +425,7 @@ void Map::update(Speed turnSpeed)
             m++;
             monsters.remove(dead);
             //printf("removing dead monster: %s",dead->name.c_str());
-            delete dead;
+            //delete dead;
         }
 		else if((*m)->speed == turnSpeed)
 			(*m)->performTurn();

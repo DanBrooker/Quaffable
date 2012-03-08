@@ -116,8 +116,8 @@ private:
 #define foreachp(type,counter,collection) for(type::iterator counter = collection->begin(); counter != collection->end(); counter++)
 #define DEV (Roguelike::dev)
 
-#define HAS_MASK(var,mask) (var == (var & mask))
-#define NOT_MASK(var,mask) (var != (var & mask))
+#define HAS_MASK(var,mask) (mask == (var & mask))
+#define NOT_MASK(var,mask) (!(mask == (var & mask)))
 
 #define MAX(x,y) ( (x>y)?x:y )
 #define MIN(x,y) ( (x<y)?x:y )

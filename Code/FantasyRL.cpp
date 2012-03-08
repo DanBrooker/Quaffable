@@ -88,5 +88,7 @@ void FantasyRL::init_world()
         monster->behaviour = (rand()%BehaviourCount);
         world->getMap()->addObject(rand()%100,rand()%100,monster);
         world->getMap()->monsters.push_back(monster);
+        
+        LOG("Spawned %s %dhp %s %s",monster->name.c_str(),monster->getMaxHP(),stringForSpeed(monster->speed).c_str(),stringForBehaviour(monster->behaviour).c_str());
     }
 }
