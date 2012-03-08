@@ -284,9 +284,7 @@ void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,in
 			LocalCoord local = LocalCoord(X,Y);//WorldCoord(X, Y);
 			WorldCoord world = local2world(local);
 			
-            if (world.X < 0 || world.X > 200) {
-                printf("found");
-            }
+
             
             if (dy < 0) {
                 
@@ -317,7 +315,7 @@ void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,in
                 {
                     if(isBlocked(world))
                     {
-                        printf("{%d,%d}\n", world.X, world.Y);
+                        
                         new_start = r_slope;
                         newStartSet = true;
                         continue;
@@ -336,7 +334,7 @@ void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,in
                 {
                     if (isBlocked(world) && (j < radius))
                     {
-                        printf("{%d,%d}\n", world.X, world.Y);
+                        
                         blocked = true;
                         cast_light(j+1, start, l_slope, xx, xy, yx, yy, id+1);
                         new_start = r_slope;
