@@ -12,5 +12,5 @@
 Player::Player() : Monster(new Ascii(64,1.0,0,0))
 {
 	behaviour = BehaviourNone;
-    sight = 20;
+    sight = 40;
 }

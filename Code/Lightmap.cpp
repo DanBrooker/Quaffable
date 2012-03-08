@@ -44,7 +44,119 @@ Ascii *Lightmap::filter(WorldCoord world,Ascii *ascii)
 LocalCoord Lightmap::world2local(WorldCoord w)
 {
 	WorldCoord me = position;
-	LocalCoord local(w.X-me.X+radius,w.Y-me.Y+radius);
+    
+    //bear in mind that the world is wrapping, the only valid answers are correct ones
+    //we need to find the closest coordinate to the local space... because the world can wrap, this isn't so straightforward.
+    //we'll judge distance the manhattan way
+//    int locals[3][3] = {{1,1,1},
+//                        {1,1,1},
+//                        {1,1,1}};
+//    
+//    if (me.X - w.X < 0) {
+//        //Then we wipe out the right side
+//        for (int i = 0; i < 3; i++) {
+//            locals[2][i] = 0;
+//        }
+//    }
+//    else {
+//        for (int i = 0; i < 3; i++) {
+//            locals[0][i] = 0;
+//        }
+//    }
+//    
+//    if (me.Y - w.Y < 0) {
+//        //Then we wipe out the bottom side
+//        for (int i = 0; i < 3; i++) {
+//            locals[i][2] = 0;
+//        }
+//    }
+//    else {
+//        for (int i = 0; i < 3; i++) {
+//            locals[i][0] = 0;
+//        }
+//    }
+//    
+//    
+//    if (abs(me.X - w.X) > abs(abs(me.X - map->size) - w.X)) {
+//        //w.X = w.X - map->size;
+//        for (int i = 0; i < 3; i++) {
+//            locals[1][i] = 0;
+//        }
+//    }
+//    else {
+//        for (int i = 0; i < 3; i++) {
+//            locals[0][i] = 0;
+//            locals[2][i] = 0;
+//        }
+//    }
+//    
+//    if (abs(me.Y - w.Y) > abs(abs(me.Y - map->size) - w.Y)) {
+//        //w.Y = w.Y - map->size;
+//        for (int i = 0; i < 3; i++) {
+//            locals[i][1] = 0;
+//        }
+//    }
+//    else {
+//        for (int i = 0; i < 3; i++) {
+//            locals[i][0] = 0;
+//            locals[i][2] = 0;
+//        }
+//    }
+//    
+//    for (int i=0; i<3; i++) {
+//        for (int j=0; j<3; j++) {
+//            if (locals[i][j] == 1) {
+//                i = i-1;
+//                j = j-1;
+//                w.X += i*map->size;
+//                w.Y += j*map->size;
+//                
+//                LocalCoord local(w.X-me.X+radius,w.Y-me.Y+radius);
+//                return local;
+//            }
+//        }
+//    }
+    
+    //At this point only one value in the grid remains... This means we can use it to determine closest point
+    int bestDist = ((me.X - w.X)*(me.X - w.X) + (me.Y - w.Y)*(me.Y - w.Y));
+    WorldCoord bestPos = w;
+    for (int i = 0; i<3; i++) {
+        int testWX = w.X;
+        if (i == 0) {
+            testWX -= map->size;
+        }
+        else if (i == 2) {
+            testWX += map->size;
+        }
+        for (int j=0; j<3; j++) {
+            int testWY = w.Y;
+            if (j==0) {
+                testWY -= map->size;
+            }
+            else if (j==2) {
+                testWY += map->size;
+            }
+//            else if (i==1){
+//                continue;
+//            }
+            int value = ((me.X - testWX)*(me.X - testWX) + (me.Y - testWY)*(me.Y - testWY));
+            if (value < bestDist) {
+                bestPos.X = testWX;
+                bestPos.Y = testWY;
+                bestDist = value;
+            }
+        }
+    }
+    
+//    if ((me.X - w.X) < abs(abs(me.X - w.X) + map->size)) {
+//        w.X = w.X + map->size;
+//    }
+//    if ((me.Y - w.Y) < abs(abs(me.Y - w.Y) + map->size)) {
+//        w.Y = w.Y + map->size;
+//    }
+    
+    
+	LocalCoord local(bestPos.X-me.X+radius,bestPos.Y-me.Y+radius);
 	return local;
 }
 
@@ -172,6 +284,10 @@ void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,in
 			LocalCoord local = LocalCoord(X,Y);//WorldCoord(X, Y);
 			WorldCoord world = local2world(local);
 			
+            if (world.X < 0 || world.X > 200) {
+                printf("found");
+            }
+            
             if (dy < 0) {
                 
             }
@@ -189,6 +305,11 @@ void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,in
                 
                 if( (dx*dx + dy*dy) < radius_squared)//ensure within sight range
 					setVisible(local,1+offset);
+                else {
+                    //printf("distance %d compared to %d\n", (dx*dx + dy*dy), radius_squared);
+                    //setVisible(local,1+offset);
+                    //printf("{%d,%d}\n", world.X, world.Y);
+                }
                 
                 
                 
@@ -196,6 +317,7 @@ void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,in
                 {
                     if(isBlocked(world))
                     {
+                        printf("{%d,%d}\n", world.X, world.Y);
                         new_start = r_slope;
                         newStartSet = true;
                         continue;
@@ -214,6 +336,7 @@ void Lightmap::cast_light(int row, float start,float end,int xx,int xy,int yx,in
                 {
                     if (isBlocked(world) && (j < radius))
                     {
+                        printf("{%d,%d}\n", world.X, world.Y);
                         blocked = true;
                         cast_light(j+1, start, l_slope, xx, xy, yx, yy, id+1);
                         new_start = r_slope;
