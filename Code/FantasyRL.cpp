@@ -85,7 +85,7 @@ void FantasyRL::init_world()
         monster->name = stringFormat("Kobold< %d>",i);
         monster->speed = (Speed)(rand()%SpeedCount);
         monster->setMaxHP(rand()%4);
-        monster->behaviour = (rand()%BehaviourCount);
+        monster->behaviour = 1<<(rand()%BehaviourCount);
         world->getMap()->addObject(rand()%100,rand()%100,monster);
         world->getMap()->monsters.push_back(monster);
         
