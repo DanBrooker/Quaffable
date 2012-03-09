@@ -261,9 +261,9 @@ void Monster::performTurn()
     /// todo
     
     /// check can attack
-    if( !attackers.empty() && NOT_MASK(behaviour,BehaviourPassive))
+    if( nearest && NOT_MASK(behaviour,BehaviourPassive))
     {
-        LOG("<[%s] wants to attack target>",nearest->name.c_str());
+        LOG("<[%s] wants to attack %s >",this->name.c_str(),nearest->name.c_str());
         
         Object *ranged = getWeaponForRanged();
         if((ranged!=NULL) && (ranged->range >= mindist))
@@ -388,6 +388,7 @@ Damages Monster::getMeleeDamages()
 void Monster::onDamagedBy(Object *attacker,Damage damage)
 {
     attackers.push_back(attacker);
+    attackers.unique();
 }
 
 void Monster::dumpInventory()
