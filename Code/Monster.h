@@ -32,7 +32,7 @@ typedef enum {
 #define BehaviourDefensive  1<<3
 #define BehaviourFlees      1<<4
 #define BehaviourTimid      1<<5
-#define BehaviourCount      1<<6
+#define BehaviourCount      6
 
 typedef int BehaviourMask;
 
@@ -139,11 +139,15 @@ inline std::string stringForBehaviour(BehaviourMask behaviour)
     
     for(int i=0; i< BehaviourCount; i++)
     {
-        if(NOT_MASK(behaviour,i))
+        if(NOT_MASK(behaviour,1<<i))
             continue;
         
-        switch(i)
+        int flag = 1<<i;
+        switch(flag)
         {
+            case BehaviourNone:
+                name += "None ";
+                break;
             case BehaviourPassive:
                 name += "Passive ";
                 break;
@@ -159,8 +163,12 @@ inline std::string stringForBehaviour(BehaviourMask behaviour)
             case BehaviourTimid:
                 name += "Timid ";
                 break;
+            default:
+                name += "Undefined ";
+                break;
         }
     }
+    //printf("behaviour value: %d\n", behaviour);
 	return name;
 }
 
