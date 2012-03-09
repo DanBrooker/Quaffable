@@ -69,10 +69,10 @@ public:
     void setTransparent(bool transparent);
     bool transparent();
     
-    virtual Damage getMeleeDamage();
-    virtual Damage getThrowDamage();
+    virtual Damages getMeleeDamages();
+    virtual Damages getThrowDamages();
     
-    virtual Damage calculateMeleeDamageFrom(Object *object);
+    virtual Damages calculateMeleeDamagesFrom(Object *object);
     
     Ascii* getAscii();
     virtual void updateAscii();
