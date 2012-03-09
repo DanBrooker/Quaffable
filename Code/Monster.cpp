@@ -28,6 +28,8 @@ Monster::Monster() : Object()
     setTransparent(true);
 	setPassable(false);
     
+    equipment = NULL;
+    
     behaviour = BehaviourDefensive;
 }
 
@@ -41,6 +43,8 @@ Monster::Monster(Ascii *ascii) : Object(ascii)
     
     setTransparent(true);
 	setPassable(false);
+    
+    equipment = NULL;
     
     behaviour = BehaviourDefensive;
 }
@@ -320,6 +324,8 @@ void Monster::calculateSight()
 /// this is kinda ok for NPCs but isn't very good for player characters
 Object *Monster::getWeaponForRanged()
 {
+    if(equipment == NULL)
+        return NULL;
     foreachp(ObjectMap, obj, equipment)
     {
         Object *weapon = obj->second;

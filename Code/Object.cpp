@@ -30,6 +30,7 @@ Object::Object(Ascii *asc)
 	_flags.transparent = YES;
     weight = 0.1;
     range = 1;
+    inventory = NULL;
 }
 
 Object::Object(AsciiGroup *asc)
@@ -40,6 +41,7 @@ Object::Object(AsciiGroup *asc)
 	_flags.transparent = YES;
     weight = 0.1;
     range = 1;
+    inventory = NULL;
 }
 
 Object::~Object()
