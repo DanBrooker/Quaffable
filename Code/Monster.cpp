@@ -207,7 +207,7 @@ void Monster::attack(Object *t, Object *weapon)
 
 void Monster::performTurn()
 {
-    if(hp <= 0)
+    if(hp <= 0 || behaviour==BehaviourNone)
         return;
      
     WorldCoord move;
