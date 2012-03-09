@@ -386,7 +386,7 @@ void Monster::onDamagedBy(Object *attacker,Damage damage)
 
 void Monster::dumpInventory()
 {
-   // Object::dumpInventory();
+    Object::dumpInventory();
     if(equipment == NULL)
         return;
     
