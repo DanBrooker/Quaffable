@@ -139,18 +139,23 @@ WorldCoord Monster::towardAttacker(Object *target)
     // two main movements are possible in four connected, effectively one square in the x or y toward the target, eg left or up, up or right, down or left, down or right
     WorldCoord move;
     WorldCoord p = getPosition();
-    WorldCoord t = getPosition();
+    WorldCoord t = target->getPosition();
     
-    int xdir = p.X > t.X ? -1 : 1;
-    int ydir = p.Y > t.Y ? -1 : 1;
+    int xdir = p.X > t.X ? -1 : p.X == t.X ? 0 : 1;
+    int ydir = p.Y > t.Y ? -1 : p.Y == t.Y ? 0 :1;
     
-    // check move in X dir
-    move = WorldCoord(p.X+xdir,p.Y);
-    if(getMap()->checkMove(this, move.X, move.Y))
-    {
-        return move;
+    if (abs(p.X - t.X) < abs(p.Y - t.Y)) {
+        xdir = 0;
     }
     
+    // check move in X dir
+    if (xdir != 0) {
+        move = WorldCoord(p.X+xdir,p.Y);
+        if(getMap()->checkMove(this, move.X, move.Y))
+        {
+            return move;
+        }
+    }
     // check move in Y dir
     move = WorldCoord(p.X,p.Y+ydir);
     if(getMap()->checkMove(this, move.X, move.Y))
@@ -167,7 +172,7 @@ WorldCoord Monster::awayFromAttacker(Object *target)
     
     WorldCoord move;
     WorldCoord p = getPosition();
-    WorldCoord t = getPosition();
+    WorldCoord t = target->getPosition();
     
     int xdir = p.X > t.X ? 1 : -1;
     int ydir = p.Y > t.Y ? 1 : -1;
@@ -194,20 +199,23 @@ void Monster::attack(Object *t, Object *weapon)
     Monster *target = dynamic_cast<Monster *>(t);
     if(target != NULL)
     {
-        Damage damage = target->calculateMeleeDamageFrom(this);
-        LOG("Hit %s.< #AA0%d dmg>",target->name.c_str(),damage.damage);
-        target->adjustHP(-damage.damage);
-        LOG("<%s.>",target->hpDescription().c_str());
-        
-        if(target->getHP() > 0 )
+        Damages damages = target->calculateMeleeDamagesFrom(this);
+        foreach(Damages, dmg, damages)
+        {
+            Damage damage = (*dmg);
+            LOG("Hit %s.< #AA0%d dmg>",target->name.c_str(),damage.damage);
+            target->adjustHP(-damage.damage);
+            LOG("<%s.>",target->hpDescription().c_str());
+            
             target->onDamagedBy(this, damage);
-        this->onDamagedObject(target,damage);
+            this->onDamagedObject(target,damage);
+        }
     }
 }
 
 void Monster::performTurn()
 {
-    if(hp <= 0)
+    if(hp <= 0 || behaviour==BehaviourNone)
         return;
      
     WorldCoord move;
@@ -342,6 +350,10 @@ Object *Monster::getWeaponForRanged()
 Objects Monster::getWeaponsForMelee()
 {    
     Objects weapons;
+    
+    if(equipment==NULL)
+        return weapons;
+    
     foreachp(ObjectMap, obj, equipment)
     {
         Object *weapon = obj->second;
@@ -374,10 +386,10 @@ Damages Monster::getMeleeDamages()
 {
     Damages dmgs;
     Objects weapons = getWeaponsForMelee();
-    foreach(Objects,w,weapons)
-    {
-        dmgs.push_back((*w)->getMeleeDamage());
-    }
+//    foreach(Objects,w,weapons)
+//    {
+//        dmgs.merge((*w)->getMeleeDamages());
+//    }
     
     if(dmgs.empty())
         dmgs.push_back(Damage(1));

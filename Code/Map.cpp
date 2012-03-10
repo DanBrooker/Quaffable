@@ -252,14 +252,17 @@ bool Map::checkCombat(Monster *monster, int i, int j)
         Monster *target = dynamic_cast<Monster *>(object);
         if(target != NULL)
         {
-            Damage damage = target->calculateMeleeDamageFrom(monster);
-            LOG("Hit %s.< #AA0%d dmg>",target->name.c_str(),damage.damage);
-            target->adjustHP(-damage.damage);
-            LOG("<%s.>",target->hpDescription().c_str());
-            
-            if(target->getHP() > 0 )
+            Damages damages = target->calculateMeleeDamagesFrom(monster);
+            foreach(Damages, dmg, damages)
+            {
+                Damage damage = (*dmg);
+                LOG("Hit %s.< #AA0%d dmg>",target->name.c_str(),damage.damage);
+                target->adjustHP(-damage.damage);
+                LOG("<%s.>",target->hpDescription().c_str());
+                
                 target->onDamagedBy(monster, damage);
-            monster->onDamagedObject(target,damage);
+                monster->onDamagedObject(target,damage);
+            }
             
             return true;
         }
@@ -423,9 +426,17 @@ void Map::update(Speed turnSpeed)
         {
             Monster *dead = (*m);
             m++;
-            monsters.remove(dead);
-            //printf("removing dead monster: %s",dead->name.c_str());
-            //delete dead;
+         
+            if(dead != player)
+            {
+                monsters.remove(dead);
+                //printf("removing dead monster: %s",dead->name.c_str());
+                //delete dead;
+            }
+            else 
+            {
+                LOG("CONGRATULATIONS YOU DIED");
+            }
         }
 		else if((*m)->speed == turnSpeed)
 			(*m)->performTurn();

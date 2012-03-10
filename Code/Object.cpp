@@ -155,22 +155,26 @@ void Object::dropInventoryObject(Object *object)
     // todo
 }
 
-Damage Object::getMeleeDamage()
+Damages Object::getMeleeDamages()
 {
-    return Damage(weight*20,DamageBlunt);
+    Damages dmgs;
+    dmgs.push_back(Damage(weight*20,DamageBlunt));
+    return dmgs;
 }
 
-Damage Object::calculateMeleeDamageFrom(Object *object)
+Damages Object::calculateMeleeDamagesFrom(Object *object)
 {
-    Damage raw = object->getMeleeDamage();
+    Damages raw = object->getMeleeDamages();
     // reduce damage from armour, resistances, whatever 
     
     return raw;
 }
 
-Damage Object::getThrowDamage()
+Damages Object::getThrowDamages()
 {
-    return Damage(weight*10,DamageBlunt);
+    Damages dmgs;
+    dmgs.push_back(Damage(weight*10,DamageBlunt));
+    return dmgs;
 }
 
 void Object::onDeath()
