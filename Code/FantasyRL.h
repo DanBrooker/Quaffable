@@ -25,7 +25,6 @@
 #include <iostream>
 #include <fstream>
 #include "Roguelike.h"
-//#include "yaml-cpp/yaml.h"
 
 class FantasyRL : public Roguelike
 {

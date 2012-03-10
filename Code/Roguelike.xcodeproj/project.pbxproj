@@ -78,6 +78,10 @@
 		65B4BA90137164AB005A69E9 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65B4BA8E137164AB005A69E9 /* Display.cpp */; };
 		65B4C68213AF18220059EFE4 /* Range.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65B4C68013AF18220059EFE4 /* Range.cpp */; };
 		65B4C68313AF18220059EFE4 /* Range.h in Headers */ = {isa = PBXBuildFile; fileRef = 65B4C68113AF18220059EFE4 /* Range.h */; };
+		65C5B6F4150AE91300BC6DB6 /* SDL_image.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 48CAEE710D976B930044F3FF /* SDL_image.framework */; };
+		65C5B6F5150AE9E900BC6DB6 /* quaffable.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 65323795136828990067C56A /* quaffable.framework */; };
+		65C5B6F7150AEAF000BC6DB6 /* SDL_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48CAEE710D976B930044F3FF /* SDL_image.framework */; };
+		65C5B6F8150AEAF200BC6DB6 /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
 		65EB40A8139C41AD00AD8FE0 /* Damage.h in Headers */ = {isa = PBXBuildFile; fileRef = 65EB40A7139C41AD00AD8FE0 /* Damage.h */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
@@ -100,8 +104,21 @@
 			dstSubfolderSpec = 10;
 			files = (
 				002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks into .app bundle */,
+				65C5B6F4150AE91300BC6DB6 /* SDL_image.framework in Copy Frameworks into .app bundle */,
+				65C5B6F5150AE9E900BC6DB6 /* quaffable.framework in Copy Frameworks into .app bundle */,
 			);
 			name = "Copy Frameworks into .app bundle";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65C5B6F6150AEADE00BC6DB6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				65C5B6F7150AEAF000BC6DB6 /* SDL_image.framework in CopyFiles */,
+				65C5B6F8150AEAF200BC6DB6 /* SDL.framework in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -162,8 +179,8 @@
 		48D352DB1113934700B4A2E9 /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Image.cpp; sourceTree = "<group>"; };
 		48DFB4301189799B00CA9F09 /* LabelValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelValue.h; sourceTree = "<group>"; };
 		48DFB4311189799B00CA9F09 /* LabelValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LabelValue.cpp; sourceTree = "<group>"; };
-		650F3ECA13822AB20080CA59 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = FantasyRL/Player.cpp; sourceTree = "<group>"; };
-		650F3ECB13822AB20080CA59 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = FantasyRL/Player.h; sourceTree = "<group>"; };
+		650F3ECA13822AB20080CA59 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		650F3ECB13822AB20080CA59 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		6514CB2E13DACE8100FF2066 /* Stringer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stringer.h; sourceTree = "<group>"; };
 		65323795136828990067C56A /* quaffable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = quaffable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65323796136828990067C56A /* Quaffable-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Quaffable-Info.plist"; sourceTree = "<group>"; };
@@ -172,8 +189,8 @@
 		653237D21368B28E0067C56A /* tileset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tileset.png; path = Images/tileset.png; sourceTree = "<group>"; };
 		653238E8136AABEC0067C56A /* FantasyRL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FantasyRL.h; sourceTree = "<group>"; };
 		653238E9136AABEC0067C56A /* FantasyRL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FantasyRL.cpp; sourceTree = "<group>"; };
-		65323914136AC9E60067C56A /* FantasyRL-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "FantasyRL-Info.plist"; path = "FantasyRL/FantasyRL-Info.plist"; sourceTree = "<group>"; };
-		65323915136AC9E60067C56A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = FantasyRL/main.cpp; sourceTree = "<group>"; };
+		65323914136AC9E60067C56A /* FantasyRL-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FantasyRL-Info.plist"; sourceTree = "<group>"; };
+		65323915136AC9E60067C56A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		656EA7A514EDB1E100C76818 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		656EA7A614EDB1E100C76818 /* README.mdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.mdown; path = ../README.mdown; sourceTree = "<group>"; };
 		6589FAD314F099CB00795BA9 /* mtrand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mtrand.cpp; sourceTree = "<group>"; };
@@ -519,6 +536,7 @@
 				65323791136828980067C56A /* Resources */,
 				65323792136828980067C56A /* Sources */,
 				65323793136828980067C56A /* Frameworks */,
+				65C5B6F6150AEADE00BC6DB6 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -730,7 +748,7 @@
 					"$(HEADER_SEARCH_PATHS)",
 					"/usr/local/include/**",
 				);
-				INFOPLIST_FILE = "FantasyRL/FantasyRL-Info.plist";
+				INFOPLIST_FILE = "FantasyRL-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = FantasyRL;
 				SDKROOT = macosx;
@@ -754,7 +772,7 @@
 					"$(HEADER_SEARCH_PATHS)",
 					"/usr/local/include/**",
 				);
-				INFOPLIST_FILE = "Roguelike-Info.plist";
+				INFOPLIST_FILE = "FantasyRL-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = FantasyRL;
 				SDKROOT = macosx;
