@@ -31,53 +31,7 @@ typedef std::list<Monster*> Monsters;
 typedef bool (*KeyAction)(void);
 typedef std::map<SDLKey,KeyAction> KeyMap;
 
-class Point
-{
-public:
-    int X,Y;
-    Point() {X=0,Y=0;};
-    Point(int x,int y) {X=x,Y=y;};
-
-    bool zero() { return X==0 && Y==0; };
-
-    bool operator==(Point &other) { return other.X == X && other.Y == Y; };
-    bool operator!=(Point &other) { return other.X != X || other.Y != Y; };
-    
-    float distance(Point b) { return sqrtf( powf(X-b.X, 2) + powf(Y-b.Y, 2)); };
-};
-
-typedef std::list<Point> Points;
-typedef Point LocalCoord;
-typedef Point WorldCoord;
-
 typedef std::map<std::string, Object *> ObjectMap;
-
-class Rect
-{
-public:
-    int X,Y,Width,Height;
-    Rect() {X=0,Y=0,Width=0,Height=0;};
-    Rect(int x,int y,int width,int height) {X=x,Y=y,Width=width,Height=height;};
-};
-
-inline Rect randomRectInRect(Rect rect,int min, int max)
-{
-    int width = min+rand()%max;
-    int height = min+rand()%max;
-    int x = rect.X + (rand() % (rect.Width - width));
-    int y = rect.Y + (rand() % (rect.Height - height)); 
-    return Rect(x,y,width,height);
-}
-
-inline Point randomPointInRect(Rect rect)
-{
-    return Point(rect.X + (rand() % rect.Width),rect.Y + (rand() % rect.Height));
-}
-
-inline Point centreOfRect(Rect rect)
-{
-    return Point(rect.X+(rect.Width/2),rect.Y+(rect.Height/2));
-}
 
 template < class Class, typename ReturnType>
 class CallBack

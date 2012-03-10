@@ -12,6 +12,8 @@
 
 class Map;
 class Ascii;
+
+#include "Point.h"
 #include "Types.h"
 
 class Lightmap

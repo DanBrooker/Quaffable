@@ -17,6 +17,8 @@
 #include "Ascii.h"
 #include "Damage.h"
 
+#include "Point.h"
+
 class Map;
 class Tile;
 

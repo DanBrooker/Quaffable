@@ -10,8 +10,9 @@
 #ifndef VORONOI_H
 #define VORONOI_H
 
-#include "Types.h"
 #include "Heightmap.h"
+#include "Point.h"
+
 #define BIG 99999.0
 
 class Voronoi : public Heightmap

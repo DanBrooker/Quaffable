@@ -82,6 +82,11 @@
 		65C5B6F5150AE9E900BC6DB6 /* quaffable.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 65323795136828990067C56A /* quaffable.framework */; };
 		65C5B6F7150AEAF000BC6DB6 /* SDL_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48CAEE710D976B930044F3FF /* SDL_image.framework */; };
 		65C5B6F8150AEAF200BC6DB6 /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
+		65C5B700150B1A3400BC6DB6 /* Stringer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65C5B6FF150B1A3400BC6DB6 /* Stringer.cpp */; };
+		65C5B703150B1B7400BC6DB6 /* Rect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65C5B702150B1B7400BC6DB6 /* Rect.cpp */; };
+		65C5B705150B1B8800BC6DB6 /* Rect.h in Headers */ = {isa = PBXBuildFile; fileRef = 65C5B704150B1B8800BC6DB6 /* Rect.h */; };
+		65C5B707150B1E0E00BC6DB6 /* Point.h in Headers */ = {isa = PBXBuildFile; fileRef = 65C5B706150B1E0E00BC6DB6 /* Point.h */; };
+		65C5B709150B1E1C00BC6DB6 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65C5B708150B1E1C00BC6DB6 /* Point.cpp */; };
 		65EB40A8139C41AD00AD8FE0 /* Damage.h in Headers */ = {isa = PBXBuildFile; fileRef = 65EB40A7139C41AD00AD8FE0 /* Damage.h */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
@@ -201,6 +206,11 @@
 		65B4BA8E137164AB005A69E9 /* Display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Display.cpp; sourceTree = "<group>"; };
 		65B4C68013AF18220059EFE4 /* Range.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Range.cpp; sourceTree = "<group>"; };
 		65B4C68113AF18220059EFE4 /* Range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Range.h; sourceTree = "<group>"; };
+		65C5B6FF150B1A3400BC6DB6 /* Stringer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stringer.cpp; sourceTree = "<group>"; };
+		65C5B702150B1B7400BC6DB6 /* Rect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rect.cpp; sourceTree = "<group>"; };
+		65C5B704150B1B8800BC6DB6 /* Rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rect.h; sourceTree = "<group>"; };
+		65C5B706150B1E0E00BC6DB6 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
+		65C5B708150B1E1C00BC6DB6 /* Point.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Point.cpp; sourceTree = "<group>"; };
 		65EB40A7139C41AD00AD8FE0 /* Damage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Damage.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* FantasyRL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FantasyRL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -235,6 +245,7 @@
 		080E96DDFE201D6D7F000001 /* Quaffable */ = {
 			isa = PBXGroup;
 			children = (
+				65C5B701150B1B2C00BC6DB6 /* Primitive */,
 				6589FAD214F099A700795BA9 /* Third Party */,
 				48B2885B1123E6A30024655F /* Types.h */,
 				489CA59C0F99840000A770A3 /* Algorithms */,
@@ -369,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				6514CB2E13DACE8100FF2066 /* Stringer.h */,
+				65C5B6FF150B1A3400BC6DB6 /* Stringer.cpp */,
 				488ED8AC0DCA76C10010C9E5 /* Random.h */,
 				488ED8AD0DCA76C10010C9E5 /* Random.cpp */,
 				48CCFBE211391F7D00E66267 /* Voronoi.h */,
@@ -486,6 +498,17 @@
 			name = Overlay;
 			sourceTree = "<group>";
 		};
+		65C5B701150B1B2C00BC6DB6 /* Primitive */ = {
+			isa = PBXGroup;
+			children = (
+				65C5B704150B1B8800BC6DB6 /* Rect.h */,
+				65C5B702150B1B7400BC6DB6 /* Rect.cpp */,
+				65C5B706150B1E0E00BC6DB6 /* Point.h */,
+				65C5B708150B1E1C00BC6DB6 /* Point.cpp */,
+			);
+			name = Primitive;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -522,6 +545,8 @@
 				65B4C68313AF18220059EFE4 /* Range.h in Headers */,
 				6514CB2F13DACE8100FF2066 /* Stringer.h in Headers */,
 				6589FAD714F099CB00795BA9 /* mtrand.h in Headers */,
+				65C5B705150B1B8800BC6DB6 /* Rect.h in Headers */,
+				65C5B707150B1E0E00BC6DB6 /* Point.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,6 +672,9 @@
 				65B4BA90137164AB005A69E9 /* Display.cpp in Sources */,
 				65B4C68213AF18220059EFE4 /* Range.cpp in Sources */,
 				6589FAD614F099CB00795BA9 /* mtrand.cpp in Sources */,
+				65C5B700150B1A3400BC6DB6 /* Stringer.cpp in Sources */,
+				65C5B703150B1B7400BC6DB6 /* Rect.cpp in Sources */,
+				65C5B709150B1E1C00BC6DB6 /* Point.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

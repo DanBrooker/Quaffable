@@ -9,6 +9,7 @@
 
 #include "Lightmap.h"
 #include "Map.h"
+#include "Point.h"
 #include <math.h>
 
 Lightmap::Lightmap()

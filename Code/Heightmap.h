@@ -7,11 +7,11 @@
  *
  */
  
-#include <stdio.h>
-#include <stdlib.h>
-
 #ifndef HEIGHTMAP_H_INC
 #define HEIGHTMAP_H_INC 
+
+#include <stdio.h>
+#include <stdlib.h>
 
 class Heightmap
 {

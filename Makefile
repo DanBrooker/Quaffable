@@ -1,7 +1,7 @@
 APP = FantasyRL
 
 DOTH = main.cpp
-SOURCES = Ascii.cpp Colour.cpp Display.cpp Heightmap.cpp Roguelike.cpp Image.cpp Label.cpp LabelValue.cpp Lightmap.cpp Map.cpp Menu.cpp ExitMenu.cpp Object.cpp Monster.cpp Player.cpp Perlin.cpp Random.cpp SDLWindow.cpp Sprite.cpp Tile.cpp Timer.cpp Voronoi.cpp Window.cpp World.cpp mtrand.cpp FantasyRL.cpp
+SOURCES = Ascii.cpp Colour.cpp Rect.cpp Point.cpp Display.cpp Heightmap.cpp Roguelike.cpp Stringer.h Image.cpp Label.cpp LabelValue.cpp Lightmap.cpp Map.cpp Menu.cpp ExitMenu.cpp Object.cpp Monster.cpp Player.cpp Perlin.cpp Random.cpp SDLWindow.cpp Sprite.cpp Tile.cpp Timer.cpp Voronoi.cpp Window.cpp World.cpp mtrand.cpp FantasyRL.cpp
 OBJS = $(SOURCES:.cpp=.o) SDLMain.o
 
 # ----------------------------------------------------------------------

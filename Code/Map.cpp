@@ -12,6 +12,7 @@
 #include "Perlin.h"
 #include "Monster.h"
 #include "Roguelike.h"
+#include "Rect.h"
 
 Map::Map(unsigned Size)
 {
@@ -446,6 +447,8 @@ void Map::update(Speed turnSpeed)
 //-- Display stuff
 void Map::updateAscii()
 {
+    /// change this to be onscreen only updates
+    
     //	Environment stuff
 	foreach(Objects,o,objects)	
         (*o)->updateAscii();

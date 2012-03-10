@@ -8,6 +8,7 @@
  */
 
 #include "Voronoi.h"
+#include "Types.h"
 #include <cmath>
 
 Voronoi::Voronoi(int size, int scale, int n) : Heightmap(size)

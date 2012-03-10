@@ -16,6 +16,17 @@
 #include "World.h"
 #include "Map.h"
 
+#include "SDL/SDL.h"
+#include "SDL_image/SDL_image.h"
+#include "SDL_OpenGL.h"
+#include "SDLWindow.h"
+#include "Window.h"
+//#include "World.h"
+#include "Image.h"
+#include "Timer.h"
+#include "ExitMenu.h"
+#include "Player.h"
+
 FantasyRL::FantasyRL()
 {
 	init_window();
@@ -65,9 +76,6 @@ void FantasyRL::init_world()
     world->setMap(new Map(worldSize));
 	
 	player = new Player();
-	player->setTransparent(false);
-	player->setPassable(false);
-	//	player->setSight(50);
     
     world->getMap()->addObject(12,12,player);
 	world->getMap()->setPlayer(player);
@@ -87,9 +95,11 @@ void FantasyRL::init_world()
         monster->speed = SpeedNormal;//(Speed)(rand()%SpeedCount);
         monster->setMaxHP(rand()%4);
         monster->behaviour = BehaviourAggressive;//1<<(rand()%BehaviourCount);
-        world->getMap()->addObject(rand()%100,rand()%100,monster);
+        world->getMap()->addObject(rand()%20,rand()%20,monster);
         world->getMap()->monsters.push_back(monster);
         
         LOG("Spawned %s %dhp %s %s",monster->name.c_str(),monster->getMaxHP(),stringForSpeed(monster->speed).c_str(),stringForBehaviour(monster->behaviour).c_str());
     }
+    
+    player->calculateSight();
 }

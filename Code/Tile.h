@@ -12,6 +12,7 @@
 
 class Map;
 
+#include "Point.h"
 #include "Ascii.h"
 #include "Types.h"
 

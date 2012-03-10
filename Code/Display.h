@@ -14,6 +14,7 @@
 #define TILE_WIDTH 12
 
 #include "Types.h"
+#include "Rect.h"
 class Ascii;
 
 class Display

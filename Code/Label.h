@@ -15,6 +15,7 @@
 #include <string>
 
 #include "Colour.h"
+#include "Rect.h"
 
 /**
  Wrap debug text in <> brackets

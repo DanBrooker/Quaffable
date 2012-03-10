@@ -18,7 +18,9 @@
 #include "Types.h"
 #include "Tile.h"
 
+#include "Rect.h"
 #include "World.h"
+
 class Monster;
 
 class Map

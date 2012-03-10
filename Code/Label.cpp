@@ -9,7 +9,6 @@
 
 #include "Label.h"
 #include "Roguelike.h"
-#include "Colour.h"
 
 Label::Label()
 {

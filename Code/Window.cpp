@@ -10,6 +10,8 @@
 #include "Window.h"
 #include "Ascii.h"
 #include "math.h"
+#include "Point.h"
+#include "Rect.h"
 
 Window::Window(Rect rect)
 {

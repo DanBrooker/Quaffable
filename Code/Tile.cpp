@@ -9,6 +9,7 @@
 
 #include "Map.h"
 #include "Tile.h"
+#include "Point.h"
 
 Tile::Tile()
 {
