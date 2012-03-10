@@ -6,12 +6,6 @@ It has some nice features, but in general it's a bit of a mess. I hope to be imp
 
 The source is licensed under the New BSD License.
 
-## Issues
-
-* Line of Sight
-* Field of View, so so broken, map boundaries cause an issue
-* Large Maps need to be chunked
-
 ## Requirements
 
 * SDL
