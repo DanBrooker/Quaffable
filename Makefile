@@ -47,3 +47,4 @@ $(APP):	$(OBJS) $(DOTH)
 
 clean:
 	rm -f $(APP) $(APP).app/$(APP) *.o f? 
+	rm -rf $(APP).app
